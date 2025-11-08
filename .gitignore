@@ -1,0 +1,17 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+.secrets/
+
+# Jupyter
+.ipynb_checkpoints/
