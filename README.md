@@ -1,12 +1,12 @@
-# MedSegTTABoard: Benchmarking Test-time Adaptation Methods for Domain Shift in Medical Image Segmentation
+# A Large Scale Benchmark for Test Time Adaptation in Medical Image Segmentation
 
-[![GitHub](https://img.shields.io/badge/GitHub-MedSegTTABoard-181717?logo=github)](https://github.com/wenjing-gg/MedSegTTABoard)
+[![GitHub](https://img.shields.io/badge/GitHub-MedSeg-TTA-181717?logo=github)](https://github.com/wenjing-gg/MedSeg-TTA)
 [![arXiv](https://img.shields.io/badge/arXiv-Coming%20soon-lightgrey?logo=arxiv)](#)
 [![Modalities](https://img.shields.io/badge/Modalities-7-blue)](#)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Coming%20soon-orange)](#)
 [![License](https://img.shields.io/badge/License-TBD-lightgrey)](#)
 
-MedSegTTABoard is an open benchmark for evaluating test-time adaptation (TTA) methods in medical image segmentation. It standardizes data, metrics, and protocols across modalities, organs, and tasks, enabling fair and reproducible comparisons under strict constraints (fixed backbone, no source-domain access, and no implicit leakage).
+MedSeg-TTA is an open benchmark for evaluating test-time adaptation (TTA) methods in medical image segmentation. It standardizes data, metrics, and protocols across modalities, organs, and tasks, enabling fair and reproducible comparisons under strict constraints (fixed backbone, no source-domain access, and no implicit leakage).
 
 ![Framework](fig/framework.png)
 
@@ -51,8 +51,8 @@ After aligning class definitions between source and target domains, “Binary”
 If you find this project useful, please cite:
 
 ```
-@article{MedSegTTABoard,
-  title   = {MedSegTTABoard: Benchmarking Test-time Adaptation Methods for Domain Shift in Medical Image Segmentation},
+@article{MedSeg-TTA,
+  title   = {MedSeg-TTA: Benchmarking Test-time Adaptation Methods for Domain Shift in Medical Image Segmentation},
   journal = {arXiv preprint arXiv:xxxx.xxxxx},
   year    = {2025}
 }
@@ -60,7 +60,7 @@ If you find this project useful, please cite:
 
 ## Links
 
-- Repository: https://github.com/wenjing-gg/MedSegTTABoard
+- Repository: https://github.com/wenjing-gg/MedSeg-TTA
 - Paper (arXiv): coming soon
 - Leaderboard: coming soon
 
