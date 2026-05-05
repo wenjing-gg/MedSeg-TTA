@@ -4,7 +4,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-Coming%20soon-lightgrey?logo=arxiv)](#)
 [![Modalities](https://img.shields.io/badge/Modalities-7-blue)](#)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Coming%20soon-orange)](#)
-[![License](https://img.shields.io/badge/License-TBD-lightgrey)](#)
+[![License](https://img.shields.io/badge/License-MIT-green)](#)
 
 MedSeg-TTA is an open benchmark for evaluating test-time adaptation (TTA) methods in medical image segmentation. It standardizes data, metrics, and protocols across modalities, organs, and tasks, enabling fair and reproducible comparisons under strict constraints (fixed backbone, no source-domain access, and no implicit leakage).
 
@@ -43,13 +43,13 @@ After aligning class definitions between source and target domains, “Binary”
 
 ## Getting Started
 
-- Install the package metadata:
+1. Install the package metadata:
 
   ```bash
   pip install -e .
   ```
 
-- Install the runtime dependencies needed by the local legacy method entrypoints:
+2. Install the runtime dependencies needed by the local legacy method entrypoints:
 
   ```bash
   pip install -e .[runtime]
@@ -57,15 +57,152 @@ After aligning class definitions between source and target domains, “Binary”
 
   The `runtime` extra currently includes the medical-imaging packages needed by the unified entrypoints, including `monai`, `dynamic-network-architectures`, `medpy`, `opencv-python-headless`, and `SimpleITK`.
 
-- Inspect the canonical method registry:
+3. Inspect the canonical method registry:
 
   ```bash
+  python -m medseg_tta list-paradigms
   python -m medseg_tta list-methods --flat
   python -m medseg_tta show-method grata
   python -m medseg_tta show-method prosfda --dimension 3d
+  python -m medseg_tta validate-structure
   ```
 
-- The repository now uses a canonical layout where the repository root groups wrapper entrypoints by paradigm first, then by method name, and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
+4. All runnable wrapper entrypoints are grouped by paradigm first, then by method name, and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
+
+## Repository Layout
+
+```text
+MedSeg-TTA/
+├── README.md
+├── LICENSE
+├── pyproject.toml
+├── docs/
+│   ├── CODE_ANALYSIS.md
+│   ├── METHOD_INDEX.md
+│   └── VALIDATION.md
+├── fig/
+├── medseg_tta/
+│   ├── __main__.py
+│   ├── cli.py
+│   ├── registry.py
+│   ├── validate.py
+│   ├── common/
+│   ├── methods/
+│   └── models/
+├── feature_level_alignment/
+│   ├── GraTa/
+│   │   ├── two_d/
+│   │   └── three_d/
+│   └── Testfit/
+│       ├── two_d/
+│       └── three_d/
+├── input_level_transformation/
+│   └── SFDA-FSM/
+│       ├── two_d/
+│       └── three_d/
+├── output_level_regularization/
+│   ├── DG-TTA/
+│   │   ├── two_d/
+│   │   └── three_d/
+│   ├── SaTTCA/
+│   │   ├── two_d/
+│   │   └── three_d/
+│   └── tent/
+│       ├── two_d/
+│       └── three_d/
+└── prior_estimation/
+    ├── ExploringTTA/
+    │   └── three_d/
+    └── ProSFDA/
+        ├── two_d/
+        └── three_d/
+```
+
+## Execution Commands
+
+Add `--help` to inspect parameters first. Replace `--help` with real dataset and checkpoint arguments when you are ready to run.
+
+### Registry and Validation
+
+```bash
+python -m medseg_tta list-paradigms
+python -m medseg_tta list-methods --flat
+python -m medseg_tta list-methods --dimension 2d --flat
+python -m medseg_tta list-methods --dimension 3d --flat
+python -m medseg_tta show-method grata
+python -m medseg_tta show-method prosfda --dimension 3d
+python -m medseg_tta validate-structure
+python -m medseg_tta run-legacy grata_3d tta3dCT.py --help
+python -m medseg_tta run-legacy prosfda_2d tta2d.py --help
+python -m medseg_tta run-legacy prosfda_3d tta3dCT.py --help
+```
+
+### Feature-level Alignment
+
+```bash
+python feature_level_alignment/GraTa/two_d/tta2d.py --help
+python feature_level_alignment/GraTa/two_d/test_target_tta.py --help
+python feature_level_alignment/GraTa/two_d/GraTa-master/TTA.py --help
+python feature_level_alignment/GraTa/three_d/tta3dCT.py --help
+python feature_level_alignment/GraTa/three_d/grata_3d.py --help
+python feature_level_alignment/GraTa/three_d/grata_wrapper.py --help
+python feature_level_alignment/GraTa/three_d/GraTa-master/TTA.py --help
+
+python feature_level_alignment/Testfit/two_d/tta2d.py --help
+python feature_level_alignment/Testfit/three_d/tta3dCT.py --help
+python feature_level_alignment/Testfit/three_d/testfit.py --help
+```
+
+### Input-level Transformation
+
+```bash
+python input_level_transformation/SFDA-FSM/two_d/tta2d.py --help
+python input_level_transformation/SFDA-FSM/two_d/tta2d_inf.py --help
+python input_level_transformation/SFDA-FSM/two_d/tools/train_adapt.py --help
+python input_level_transformation/SFDA-FSM/two_d/tools/test.py --help
+python input_level_transformation/SFDA-FSM/three_d/tta3d.py --help
+python input_level_transformation/SFDA-FSM/three_d/tta3dCT.py --help
+```
+
+### Output-level Regularization
+
+```bash
+python output_level_regularization/DG-TTA/two_d/tta2d.py --help
+python output_level_regularization/DG-TTA/three_d/tta3dCT.py --help
+python output_level_regularization/DG-TTA/three_d/test_target_tta.py --help
+
+python output_level_regularization/SaTTCA/two_d/sattc.py --help
+python output_level_regularization/SaTTCA/two_d/tta2d.py --help
+python output_level_regularization/SaTTCA/three_d/tta3dCT.py --help
+python output_level_regularization/SaTTCA/three_d/tta3dMRI.py --help
+
+python output_level_regularization/tent/two_d/tent2d.py --help
+python output_level_regularization/tent/two_d/tta2d.py --help
+python output_level_regularization/tent/three_d/tent.py --help
+python output_level_regularization/tent/three_d/tta3d.py --help
+python output_level_regularization/tent/three_d/tta3dCT.py --help
+```
+
+### Prior Estimation
+
+```bash
+python prior_estimation/ProSFDA/two_d/tta2d.py --help
+python prior_estimation/ProSFDA/two_d/prosfda/training/run_training.py --help
+python prior_estimation/ProSFDA/two_d/prosfda/inference/run_inference.py --help
+python prior_estimation/ProSFDA/three_d/tta3dCT.py --help
+python prior_estimation/ProSFDA/three_d/prosfda/training/run_training.py --help
+python prior_estimation/ProSFDA/three_d/prosfda/inference/run_inference.py --help
+
+python prior_estimation/ExploringTTA/three_d/tta3dCT.py --help
+python prior_estimation/ExploringTTA/three_d/test_target_tta.py --help
+```
+
+### Runtime Smoke Examples
+
+```bash
+python output_level_regularization/DG-TTA/two_d/tta2d.py --target_dir /tmp/missing_target --checkpoint_dir /tmp/medseg-tta-2d --model_path /tmp/missing.pth --gpu -1
+python output_level_regularization/tent/three_d/tta3dCT.py --target_dir /tmp/missing_target --tent_results_dir /tmp/medseg-tta-3d --checkpoint /tmp/missing.pth --gpu -1
+```
 
 ## Citation
 
@@ -84,10 +221,6 @@ If you find this project useful, please cite:
 - Repository: https://github.com/wenjing-gg/MedSeg-TTA
 - Paper (arXiv): coming soon
 - Leaderboard: coming soon
-
-## Contributing
-
-Contributions are welcome. Please read `CONTRIBUTING.md` for guidelines (branching, Conventional Commits, CI checks). PRs should pass markdownlint and link checks.
 
 ## License
 
@@ -108,9 +241,9 @@ Paradigm directories:
 
 Documentation:
 
-- `docs/METHOD_INDEX.md`: mapping from the representative method table to local code status, grouped by paradigm.
-- `docs/CODE_ANALYSIS.md`: organized analysis of the included method implementations and shared code.
-- `docs/VALIDATION.md`: syntax, structure, CLI, dependency, and smoke validation commands.
+- `docs/METHOD_INDEX.md`: method-to-package mapping grouped by paradigm.
+- `docs/CODE_ANALYSIS.md`: package layout and code organization notes.
+- `docs/VALIDATION.md`: validation and smoke command history.
 
 Legacy wrapper entrypoints now follow the canonical outer-directory layout, for example:
 
