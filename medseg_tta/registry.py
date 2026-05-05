@@ -99,7 +99,7 @@ _METHOD_DATA = [
     {
         "slug": "dg_tta",
         "name": "DG-TTA",
-        "source_dir": "DG-TTA",
+        "source_dir": "output_level_regularization/DG-TTA",
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "MRI/CT",
@@ -114,7 +114,7 @@ _METHOD_DATA = [
     {
         "slug": "sattca",
         "name": "SaTTCA",
-        "source_dir": "SaTTCA",
+        "source_dir": "output_level_regularization/SaTTCA",
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "CT",
@@ -129,7 +129,7 @@ _METHOD_DATA = [
     {
         "slug": "grata",
         "name": "GraTa",
-        "source_dir": "GraTa",
+        "source_dir": "feature_level_alignment/GraTa",
         "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "OCT/CT",
@@ -145,7 +145,7 @@ _METHOD_DATA = [
     {
         "slug": "testfit",
         "name": "TestFit",
-        "source_dir": "Testfit",
+        "source_dir": "feature_level_alignment/Testfit",
         "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "CT/PATH",
@@ -160,7 +160,7 @@ _METHOD_DATA = [
     {
         "slug": "tent",
         "name": "TENT",
-        "source_dir": "tent",
+        "source_dir": "output_level_regularization/tent",
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "General Image",
@@ -175,7 +175,7 @@ _METHOD_DATA = [
     {
         "slug": "prosfda",
         "name": "ProSFDA",
-        "source_dir": "ProSFDA",
+        "source_dir": "prior_estimation/ProSFDA",
         "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "OCT/CT",
@@ -202,7 +202,7 @@ _METHOD_DATA = [
     {
         "slug": "exploring_tta",
         "name": "ExploringTTA",
-        "source_dir": "ExploringTTA",
+        "source_dir": "prior_estimation/ExploringTTA",
         "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "US",
@@ -216,7 +216,7 @@ _METHOD_DATA = [
     {
         "slug": "sfda_fsm",
         "name": "SFDA-FSM",
-        "source_dir": "SFDA-FSM",
+        "source_dir": "input_level_transformation/SFDA-FSM",
         "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "modality": "Endoscope",

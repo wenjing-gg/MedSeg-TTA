@@ -23,9 +23,10 @@ medseg_tta/methods/<paradigm>/<method>/
 Top-level wrapper directories mirror the same convention:
 
 ```text
-<MethodName>/
-  two_d/
-  three_d/
+<paradigm>/
+  <MethodName>/
+    two_d/
+    three_d/
 ```
 
 ## Method Summary
@@ -34,7 +35,7 @@ Top-level wrapper directories mirror the same convention:
 
 - SFDA-FSM
   - Package: `medseg_tta.methods.input_level_transformation.sfda_fsm`
-  - Source directory: `SFDA-FSM`
+  - Source directory: `input_level_transformation/SFDA-FSM`
   - Dimensions: `two_d`, `three_d`
   - Shared support code: `common/legacy`
 
@@ -42,13 +43,13 @@ Top-level wrapper directories mirror the same convention:
 
 - GraTa
   - Package: `medseg_tta.methods.feature_level_alignment.grata`
-  - Source directory: `GraTa`
+  - Source directory: `feature_level_alignment/GraTa`
   - Dimensions: `two_d`, `three_d`
   - Notes: previous `grata` and `grata_3d` packages are unified; `grata_3d` remains as an import alias stub.
 
 - TestFit
   - Package: `medseg_tta.methods.feature_level_alignment.testfit`
-  - Source directory: `Testfit`
+  - Source directory: `feature_level_alignment/Testfit`
   - Dimensions: `two_d`, `three_d`
   - Shared support code: `common/legacy`
 
@@ -56,19 +57,19 @@ Top-level wrapper directories mirror the same convention:
 
 - DG-TTA
   - Package: `medseg_tta.methods.output_level_regularization.dg_tta`
-  - Source directory: `DG-TTA`
+  - Source directory: `output_level_regularization/DG-TTA`
   - Dimensions: `two_d`, `three_d`
   - Shared support code: `common/legacy`
 
 - SaTTCA
   - Package: `medseg_tta.methods.output_level_regularization.sattca`
-  - Source directory: `SaTTCA`
+  - Source directory: `output_level_regularization/SaTTCA`
   - Dimensions: `two_d`, `three_d`
   - Shared support code: `common/legacy`
 
 - TENT
   - Package: `medseg_tta.methods.output_level_regularization.tent`
-  - Source directory: `tent`
+  - Source directory: `output_level_regularization/tent`
   - Dimensions: `two_d`, `three_d`
   - Shared support code: `common/legacy`
 
@@ -76,13 +77,13 @@ Top-level wrapper directories mirror the same convention:
 
 - ProSFDA
   - Package: `medseg_tta.methods.prior_estimation.prosfda`
-  - Source directory: `ProSFDA`
+  - Source directory: `prior_estimation/ProSFDA`
   - Dimensions: `two_d`, `three_d`
   - Notes: previous `prosfda_2d` and `prosfda_3d` packages are unified; both old package names remain as import alias stubs.
 
 - ExploringTTA
   - Package: `medseg_tta.methods.prior_estimation.exploring_tta`
-  - Source directory: `ExploringTTA`
+  - Source directory: `prior_estimation/ExploringTTA`
   - Dimensions: `three_d`
 
 ## Shared Structure

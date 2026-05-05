@@ -79,7 +79,7 @@ def show_method(args):
     print(f"Original modality: {method.modality}")
     print(f"Available dimensions: {', '.join(method.dimension_labels)}")
     print(f"Package: {method.package}")
-    print(f"Canonical source: {method.source_dir}")
+    print(f"Wrapper root: {method.source_dir}")
     if method.aliases:
         print(f"Legacy aliases: {', '.join(sorted(method.aliases))}")
     print(f"Summary: {method.summary}")

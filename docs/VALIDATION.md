@@ -14,7 +14,7 @@ The `runtime` extra covers the currently required runtime dependencies that were
 ## Passed
 
 ```bash
-python -m compileall medseg_tta DG-TTA GraTa ProSFDA SaTTCA Testfit tent SFDA-FSM ExploringTTA
+python -m compileall medseg_tta feature_level_alignment input_level_transformation output_level_regularization prior_estimation
 python -m medseg_tta list-paradigms
 python -m medseg_tta list-methods --flat
 python -m medseg_tta list-methods --dimension 2d --flat
@@ -23,13 +23,13 @@ python -m medseg_tta show-method grata
 python -m medseg_tta show-method prosfda --dimension 3d
 python -m medseg_tta validate-structure
 python -m medseg_tta run-legacy grata_3d tta3dCT.py --help
-python GraTa/two_d/tta2d.py --help
-python GraTa/three_d/tta3dCT.py --help
-python ProSFDA/two_d/tta2d.py --help
-python ProSFDA/three_d/tta3dCT.py --help
-python SFDA-FSM/two_d/tools/test.py --help
-python DG-TTA/two_d/tta2d.py --help
-python DG-TTA/three_d/tta3dCT.py --help
+python feature_level_alignment/GraTa/two_d/tta2d.py --help
+python feature_level_alignment/GraTa/three_d/tta3dCT.py --help
+python prior_estimation/ProSFDA/two_d/tta2d.py --help
+python prior_estimation/ProSFDA/three_d/tta3dCT.py --help
+python input_level_transformation/SFDA-FSM/two_d/tools/test.py --help
+python output_level_regularization/DG-TTA/two_d/tta2d.py --help
+python output_level_regularization/DG-TTA/three_d/tta3dCT.py --help
 ```
 
 ## Runtime Smoke
@@ -39,8 +39,8 @@ After dependency installation, at least one 2D entrypoint and one 3D entrypoint 
 Recommended smoke commands:
 
 ```bash
-python DG-TTA/two_d/tta2d.py --target_dir /tmp/missing_target --checkpoint_dir /tmp/medseg-tta-2d --model_path /tmp/missing.pth --gpu -1
-python tent/three_d/tta3dCT.py --target_dir /tmp/missing_target --tent_results_dir /tmp/medseg-tta-3d --checkpoint /tmp/missing.pth --gpu -1
+python output_level_regularization/DG-TTA/two_d/tta2d.py --target_dir /tmp/missing_target --checkpoint_dir /tmp/medseg-tta-2d --model_path /tmp/missing.pth --gpu -1
+python output_level_regularization/tent/three_d/tta3dCT.py --target_dir /tmp/missing_target --tent_results_dir /tmp/medseg-tta-3d --checkpoint /tmp/missing.pth --gpu -1
 ```
 
 These commands are expected to complete argument parsing, import resolution, and result-directory setup before failing on the intentionally missing data or checkpoint path.

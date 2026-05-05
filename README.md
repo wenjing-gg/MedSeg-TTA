@@ -65,7 +65,7 @@ After aligning class definitions between source and target domains, “Binary”
   python -m medseg_tta show-method prosfda --dimension 3d
   ```
 
-- The repository now uses a canonical layout where the outer directory keeps only the method name and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
+- The repository now uses a canonical layout where the repository root groups wrapper entrypoints by paradigm first, then by method name, and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
 
 ## Citation
 
@@ -114,10 +114,10 @@ Documentation:
 
 Legacy wrapper entrypoints now follow the canonical outer-directory layout, for example:
 
-- `DG-TTA/two_d/tta2d.py`
-- `GraTa/three_d/tta3dCT.py`
-- `ProSFDA/two_d/prosfda/inference/run_inference.py`
-- `tent/three_d/tta3dCT.py`
+- `output_level_regularization/DG-TTA/two_d/tta2d.py`
+- `feature_level_alignment/GraTa/three_d/tta3dCT.py`
+- `prior_estimation/ProSFDA/two_d/prosfda/inference/run_inference.py`
+- `output_level_regularization/tent/three_d/tta3dCT.py`
 
 Registry aliases are retained for `grata_3d`, `prosfda_2d`, and `prosfda_3d`, but the old top-level directories `GraTa-3d`, `ProSFDA2D`, and `ProSFDA3D` are removed.
 
