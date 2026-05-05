@@ -4,8 +4,8 @@ from pathlib import Path
 from ..registry import find_method
 
 
-def legacy_root(slug):
-    return Path(__file__).resolve().parents[1] / 'methods' / slug / 'legacy'
+def legacy_root(spec):
+    return Path(__file__).resolve().parents[1] / 'methods' / spec.paradigm_slug / spec.slug / 'legacy'
 
 
 def legacy_help(method, entry):
@@ -13,7 +13,7 @@ def legacy_help(method, entry):
     print(f"usage: {spec.source_dir}/{entry} [legacy arguments]")
     print()
     print(f"{spec.name} legacy entrypoint wrapper")
-    print(f"Forward target: medseg_tta.methods.{spec.slug}.legacy/{entry}")
+    print(f"Forward target: {spec.package}.legacy/{entry}")
     print()
     print('This lightweight help does not import optional medical-imaging dependencies.')
     print('Run without --help to execute the original entrypoint from the unified package copy.')
@@ -25,7 +25,7 @@ def run_legacy_entrypoint(method, entry, argv=None):
     if '--help' in argv or '-h' in argv:
         return legacy_help(method, entry)
     spec = find_method(method)
-    root = legacy_root(spec.slug)
+    root = legacy_root(spec)
     path = root / entry
     if not path.is_file():
         raise FileNotFoundError(path)

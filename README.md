@@ -76,14 +76,21 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ## Code Release
 
-This repository now includes a unified Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/`.
+This repository now includes a paradigm-organized Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/legacy`.
+
+Paradigm directories:
+
+- `medseg_tta/methods/input_level_transformation/`
+- `medseg_tta/methods/feature_level_alignment/`
+- `medseg_tta/methods/output_level_regularization/`
+- `medseg_tta/methods/prior_estimation/`
 
 Documentation:
 
-- `docs/METHOD_INDEX.md`: mapping from the representative method table to local code status.
-- `docs/CODE_ANALYSIS.md`: organized analysis of the included method implementations.
-- `docs/VALIDATION.md`: syntax, compile, CLI, and dry-run validation commands.
+- `docs/METHOD_INDEX.md`: mapping from the representative method table to local code status, grouped by paradigm.
+- `docs/CODE_ANALYSIS.md`: organized analysis of the included method implementations and shared code.
+- `docs/VALIDATION.md`: syntax, structure, CLI, and dry-run validation commands.
 
-Legacy entrypoints such as `DG-TTA/tta2d.py`, `SaTTCA/tta3dCT.py`, and `tent/tta3dCT.py` remain as lightweight wrappers that forward to the unified package copy.
+Legacy entrypoints such as `DG-TTA/tta2d.py`, `SaTTCA/tta3dCT.py`, and `tent/tta3dCT.py` remain as lightweight wrappers that forward to the paradigm-organized unified package copy.
 
 <!-- MEDSEG_TTA_CODE_RELEASE_END -->

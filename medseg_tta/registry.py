@@ -2,10 +2,17 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class ParadigmSpec:
+    slug: str
+    name: str
+
+
+@dataclass(frozen=True)
 class MethodSpec:
     slug: str
     name: str
     source_dir: str
+    paradigm_slug: str
     paradigm: str
     modality: str
     dimension: str
@@ -20,21 +27,45 @@ def _build_spec(item):
         slug=item['slug'],
         name=item['name'],
         source_dir=item['source_dir'],
+        paradigm_slug=item['paradigm_slug'],
         paradigm=item['paradigm'],
         modality=item['modality'],
         dimension=item['dimension'],
         status=item['status'],
         summary=item['summary'],
         entries=tuple(item['entries']),
-        package=f"medseg_tta.methods.{item['slug']}",
+        package=f"medseg_tta.methods.{item['paradigm_slug']}.{item['slug']}",
     )
 
 
+def _normalize(value):
+    return value.lower().replace('-', '_').replace(' ', '_')
+
+
+_PARADIGM_DATA = [
+    {
+        "slug": "input_level_transformation",
+        "name": "Input-level Transformation"
+    },
+    {
+        "slug": "feature_level_alignment",
+        "name": "Feature-level Alignment"
+    },
+    {
+        "slug": "output_level_regularization",
+        "name": "Output-level Regularization"
+    },
+    {
+        "slug": "prior_estimation",
+        "name": "Prior Estimation"
+    }
+]
 _METHOD_DATA = [
     {
         "slug": "dg_tta",
         "name": "DG-TTA",
         "source_dir": "DG-TTA",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "MRI/CT",
         "dimension": "3D",
@@ -50,6 +81,7 @@ _METHOD_DATA = [
         "slug": "sattca",
         "name": "SaTTCA",
         "source_dir": "SaTTCA",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "CT",
         "dimension": "3D",
@@ -66,6 +98,7 @@ _METHOD_DATA = [
         "slug": "grata",
         "name": "GraTa",
         "source_dir": "GraTa",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "OCT",
         "dimension": "2D",
@@ -81,6 +114,7 @@ _METHOD_DATA = [
         "slug": "grata_3d",
         "name": "GraTa-3D",
         "source_dir": "GraTa-3d",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "CT",
         "dimension": "3D",
@@ -97,6 +131,7 @@ _METHOD_DATA = [
         "slug": "testfit",
         "name": "TestFit",
         "source_dir": "Testfit",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "CT/PATH",
         "dimension": "General",
@@ -112,6 +147,7 @@ _METHOD_DATA = [
         "slug": "tent",
         "name": "TENT",
         "source_dir": "tent",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "General Image",
         "dimension": "General",
@@ -129,6 +165,7 @@ _METHOD_DATA = [
         "slug": "prosfda_2d",
         "name": "ProSFDA-2D",
         "source_dir": "ProSFDA2D",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "OCT",
         "dimension": "2D",
@@ -144,6 +181,7 @@ _METHOD_DATA = [
         "slug": "prosfda_3d",
         "name": "ProSFDA-3D",
         "source_dir": "ProSFDA3D",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "CT",
         "dimension": "3D",
@@ -159,6 +197,7 @@ _METHOD_DATA = [
         "slug": "exploring_tta",
         "name": "ExploringTTA",
         "source_dir": "ExploringTTA",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "US",
         "dimension": "3D",
@@ -173,6 +212,7 @@ _METHOD_DATA = [
         "slug": "sfda_fsm",
         "name": "SFDA-FSM",
         "source_dir": "SFDA-FSM",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "modality": "Endoscope",
         "dimension": "2D",
@@ -191,6 +231,7 @@ _METHOD_DATA = [
 TABLE_METHODS = [
     {
         "name": "AIF-SFDA",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "OCT",
         "original_dimension": "2D",
@@ -198,6 +239,7 @@ TABLE_METHODS = [
     },
     {
         "name": "STDR",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
         "original_dimension": "2D",
@@ -205,6 +247,7 @@ TABLE_METHODS = [
     },
     {
         "name": "RSA",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
         "original_dimension": "2D",
@@ -212,6 +255,7 @@ TABLE_METHODS = [
     },
     {
         "name": "SFDA-FSM",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "Endoscope",
         "original_dimension": "2D",
@@ -219,6 +263,7 @@ TABLE_METHODS = [
     },
     {
         "name": "DL-TTA",
+        "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "PATH",
         "original_dimension": "2D",
@@ -226,6 +271,7 @@ TABLE_METHODS = [
     },
     {
         "name": "GraTa",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "original_modality": "OCT",
         "original_dimension": "2D",
@@ -233,6 +279,7 @@ TABLE_METHODS = [
     },
     {
         "name": "UDA-MIMA",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
@@ -240,6 +287,7 @@ TABLE_METHODS = [
     },
     {
         "name": "DeTTA",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "original_modality": "CT",
         "original_dimension": "2D",
@@ -247,6 +295,7 @@ TABLE_METHODS = [
     },
     {
         "name": "TestFit",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "original_modality": "CT/PATH",
         "original_dimension": "General",
@@ -254,6 +303,7 @@ TABLE_METHODS = [
     },
     {
         "name": "DANN",
+        "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI",
         "original_dimension": "3D",
@@ -261,6 +311,7 @@ TABLE_METHODS = [
     },
     {
         "name": "SmaRT",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "original_modality": "MRI",
         "original_dimension": "3D",
@@ -268,6 +319,7 @@ TABLE_METHODS = [
     },
     {
         "name": "DG-TTA",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
@@ -275,6 +327,7 @@ TABLE_METHODS = [
     },
     {
         "name": "SaTTCA",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "original_modality": "CT",
         "original_dimension": "3D",
@@ -282,6 +335,7 @@ TABLE_METHODS = [
     },
     {
         "name": "UPL-SFDA",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "original_modality": "CMR/MRI",
         "original_dimension": "General",
@@ -289,6 +343,7 @@ TABLE_METHODS = [
     },
     {
         "name": "TENT",
+        "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "original_modality": "General Image",
         "original_dimension": "General",
@@ -296,6 +351,7 @@ TABLE_METHODS = [
     },
     {
         "name": "ProSFDA",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
@@ -303,6 +359,7 @@ TABLE_METHODS = [
     },
     {
         "name": "ExploringTTA",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "original_modality": "US",
         "original_dimension": "3D",
@@ -310,6 +367,7 @@ TABLE_METHODS = [
     },
     {
         "name": "PASS",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
@@ -317,6 +375,7 @@ TABLE_METHODS = [
     },
     {
         "name": "VPTTA",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
@@ -324,19 +383,29 @@ TABLE_METHODS = [
     },
     {
         "name": "AdaMI",
+        "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
         "status": "missing"
     }
 ]
+PARADIGMS = tuple(ParadigmSpec(**item) for item in _PARADIGM_DATA)
 METHODS = tuple(_build_spec(item) for item in _METHOD_DATA)
 
 
+def find_paradigm(key):
+    normalized = _normalize(key)
+    for paradigm in PARADIGMS:
+        if normalized in {paradigm.slug, _normalize(paradigm.name)}:
+            return paradigm
+    raise KeyError(key)
+
+
 def find_method(key):
-    normalized = key.lower().replace('-', '_').replace(' ', '_')
+    normalized = _normalize(key)
     for method in METHODS:
-        names = {method.slug, method.name.lower().replace('-', '_').replace(' ', '_')}
+        names = {method.slug, _normalize(method.name)}
         if normalized in names or any(name.startswith(f'{normalized}_') for name in names):
             return method
     raise KeyError(key)
@@ -344,3 +413,17 @@ def find_method(key):
 
 def available_methods():
     return tuple(method for method in METHODS if method.status == 'available')
+
+
+def methods_by_paradigm(paradigm=None):
+    if paradigm is None:
+        return {p.slug: tuple(m for m in METHODS if m.paradigm_slug == p.slug) for p in PARADIGMS}
+    spec = find_paradigm(paradigm)
+    return tuple(method for method in METHODS if method.paradigm_slug == spec.slug)
+
+
+def table_by_paradigm(paradigm=None):
+    if paradigm is None:
+        return {p.slug: tuple(row for row in TABLE_METHODS if row['paradigm_slug'] == p.slug) for p in PARADIGMS}
+    spec = find_paradigm(paradigm)
+    return tuple(row for row in TABLE_METHODS if row['paradigm_slug'] == spec.slug)
