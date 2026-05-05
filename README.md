@@ -71,3 +71,19 @@ Contributions are welcome. Please read `CONTRIBUTING.md` for guidelines (branchi
 ## License
 
 This project is released under the MIT License. See `LICENSE` for details.
+
+<!-- MEDSEG_TTA_CODE_RELEASE_START -->
+
+## Code Release
+
+This repository now includes a unified Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/`.
+
+Documentation:
+
+- `docs/METHOD_INDEX.md`: mapping from the representative method table to local code status.
+- `docs/CODE_ANALYSIS.md`: organized analysis of the included method implementations.
+- `docs/VALIDATION.md`: syntax, compile, CLI, and dry-run validation commands.
+
+Legacy entrypoints such as `DG-TTA/tta2d.py`, `SaTTCA/tta3dCT.py`, and `tent/tta3dCT.py` remain as lightweight wrappers that forward to the unified package copy.
+
+<!-- MEDSEG_TTA_CODE_RELEASE_END -->

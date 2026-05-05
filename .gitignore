@@ -5,13 +5,33 @@ Thumbs.db
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .venv/
 venv/
 .secrets/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Model weights and generated medical-imaging artifacts
+*.pth
+*.pt
+*.ckpt
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+*.nii
+*.nii.gz
+*.npz
+
+# Local experiment outputs
+checkpoints*/
+checkpoint*/
+results/
+target_test_results/

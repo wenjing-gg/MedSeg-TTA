@@ -1,0 +1,11 @@
+path,fold,source,size
+roi_files/LIDC_P277_S0_T1_Z3.000_Y0.750_X0.750.npz,0,1,9.0
+roi_files/LIDC_P796_S0_T0_Z2.500_Y0.820_X0.820.npz,5,1,24.0
+roi_files/LIDC_P570_S0_T1_Z3.000_Y0.645_X0.645.npz,9,1,11.0
+roi_files/LIDC_P104_S0_T6_Z1.000_Y0.643_X0.643.npz,4,1,4.0
+roi_files/LIDC_P181_S0_T3_Z2.500_Y0.859_X0.859.npz,3,1,10.0
+roi_files/LIDC_P77_S0_T4_Z1.000_Y0.830_X0.830.npz,7,2,14.0
+roi_files/LNDB_P214_S0_T1_Z1.000_Y0.666_X0.666_R0.npz,6,2,6.0
+roi_files/LNDB_P7_S0_T2_Z1.000_Y0.652_X0.652_R0.npz,1,2,6.0
+roi_files/LNDB_P85_S0_T1_Z1.000_Y0.691_X0.691_R0.npz,2,2,5.0
+roi_files/LNDB_P64_S0_T0_Z1.000_Y0.652_X0.652_R0.npz,8,2,24.0

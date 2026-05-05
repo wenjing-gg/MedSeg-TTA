@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medseg-tta"
+version = "0.1.0"
+description = "Unified local implementations for MedSeg-TTA methods"
+requires-python = ">=3.10"
+
+[project.scripts]
+medseg-tta = "medseg_tta.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["medseg_tta*"]

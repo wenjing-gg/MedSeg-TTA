@@ -1,0 +1,1 @@
+METHOD_SLUG = 'tent'
