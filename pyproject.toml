@@ -7,6 +7,27 @@ name = "medseg-tta"
 version = "0.1.0"
 description = "Unified local implementations for MedSeg-TTA methods"
 requires-python = ">=3.10"
+dependencies = [
+    "nibabel",
+    "numpy<2.0",
+    "pandas",
+    "scipy",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+runtime = [
+    "torch",
+    "monai",
+    "dynamic-network-architectures",
+    "medpy",
+    "opencv-python-headless<4.13",
+    "SimpleITK",
+    "matplotlib",
+    "Pillow",
+    "torchsummary",
+    "yacs",
+]
 
 [project.scripts]
 medseg-tta = "medseg_tta.cli:main"

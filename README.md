@@ -43,8 +43,29 @@ After aligning class definitions between source and target domains, “Binary”
 
 ## Getting Started
 
-- Code and reproducible baselines are being prepared for public release. The repository already hosts standardized figures and dataset references; training and evaluation scripts will follow under a unified TTBA protocol.
-- Planned components: baseline configs, evaluation toolkit (Dice/HD95 + region consistency), submission format, and a public leaderboard for cross-modality comparisons.
+- Install the package metadata:
+
+  ```bash
+  pip install -e .
+  ```
+
+- Install the runtime dependencies needed by the local legacy method entrypoints:
+
+  ```bash
+  pip install -e .[runtime]
+  ```
+
+  The `runtime` extra currently includes the medical-imaging packages needed by the unified entrypoints, including `monai`, `dynamic-network-architectures`, `medpy`, `opencv-python-headless`, and `SimpleITK`.
+
+- Inspect the canonical method registry:
+
+  ```bash
+  python -m medseg_tta list-methods --flat
+  python -m medseg_tta show-method grata
+  python -m medseg_tta show-method prosfda --dimension 3d
+  ```
+
+- The repository now uses a canonical layout where the outer directory keeps only the method name and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
 
 ## Citation
 
@@ -76,7 +97,7 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ## Code Release
 
-This repository now includes a paradigm-organized Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/legacy`.
+This repository now includes a paradigm-organized Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps canonical method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/two_d|three_d|common`.
 
 Paradigm directories:
 
@@ -89,8 +110,15 @@ Documentation:
 
 - `docs/METHOD_INDEX.md`: mapping from the representative method table to local code status, grouped by paradigm.
 - `docs/CODE_ANALYSIS.md`: organized analysis of the included method implementations and shared code.
-- `docs/VALIDATION.md`: syntax, structure, CLI, and dry-run validation commands.
+- `docs/VALIDATION.md`: syntax, structure, CLI, dependency, and smoke validation commands.
 
-Legacy entrypoints such as `DG-TTA/tta2d.py`, `SaTTCA/tta3dCT.py`, and `tent/tta3dCT.py` remain as lightweight wrappers that forward to the paradigm-organized unified package copy.
+Legacy wrapper entrypoints now follow the canonical outer-directory layout, for example:
+
+- `DG-TTA/two_d/tta2d.py`
+- `GraTa/three_d/tta3dCT.py`
+- `ProSFDA/two_d/prosfda/inference/run_inference.py`
+- `tent/three_d/tta3dCT.py`
+
+Registry aliases are retained for `grata_3d`, `prosfda_2d`, and `prosfda_3d`, but the old top-level directories `GraTa-3d`, `ProSFDA2D`, and `ProSFDA3D` are removed.
 
 <!-- MEDSEG_TTA_CODE_RELEASE_END -->

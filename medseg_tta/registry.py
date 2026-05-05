@@ -1,4 +1,22 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
+
+
+DIMENSION_LABELS = {
+    "two_d": "2D",
+    "three_d": "3D",
+}
+DIMENSION_ALIASES = {
+    "2d": "two_d",
+    "two_d": "two_d",
+    "twod": "two_d",
+    "2_d": "two_d",
+    "3d": "three_d",
+    "three_d": "three_d",
+    "threed": "three_d",
+    "3_d": "three_d",
+}
 
 
 @dataclass(frozen=True)
@@ -15,51 +33,68 @@ class MethodSpec:
     paradigm_slug: str
     paradigm: str
     modality: str
-    dimension: str
     status: str
     summary: str
-    entries: tuple[str, ...]
+    dimensions: tuple[str, ...]
+    entries_by_dimension: dict[str, tuple[str, ...]]
+    aliases: dict[str, str]
     package: str
 
+    @property
+    def dimension_labels(self) -> tuple[str, ...]:
+        return tuple(DIMENSION_LABELS[dimension] for dimension in self.dimensions)
 
-def _build_spec(item):
+    @property
+    def display_dimensions(self) -> str:
+        return "/".join(self.dimension_labels)
+
+
+def _normalize(value: str) -> str:
+    return value.lower().replace("-", "_").replace(" ", "_")
+
+
+def normalize_dimension(value: str | None) -> str | None:
+    if value is None:
+        return None
+    normalized = _normalize(value)
+    if normalized not in DIMENSION_ALIASES:
+        raise KeyError(value)
+    return DIMENSION_ALIASES[normalized]
+
+
+def _build_spec(item: dict) -> MethodSpec:
+    dimensions = tuple(item["dimensions"])
+    entries_by_dimension = {
+        dimension: tuple(item["entries_by_dimension"][dimension])
+        for dimension in dimensions
+    }
+    aliases = {
+        _normalize(alias): dimension
+        for alias, dimension in item.get("aliases", {}).items()
+    }
     return MethodSpec(
-        slug=item['slug'],
-        name=item['name'],
-        source_dir=item['source_dir'],
-        paradigm_slug=item['paradigm_slug'],
-        paradigm=item['paradigm'],
-        modality=item['modality'],
-        dimension=item['dimension'],
-        status=item['status'],
-        summary=item['summary'],
-        entries=tuple(item['entries']),
+        slug=item["slug"],
+        name=item["name"],
+        source_dir=item["source_dir"],
+        paradigm_slug=item["paradigm_slug"],
+        paradigm=item["paradigm"],
+        modality=item["modality"],
+        status=item["status"],
+        summary=item["summary"],
+        dimensions=dimensions,
+        entries_by_dimension=entries_by_dimension,
+        aliases=aliases,
         package=f"medseg_tta.methods.{item['paradigm_slug']}.{item['slug']}",
     )
 
 
-def _normalize(value):
-    return value.lower().replace('-', '_').replace(' ', '_')
-
-
 _PARADIGM_DATA = [
-    {
-        "slug": "input_level_transformation",
-        "name": "Input-level Transformation"
-    },
-    {
-        "slug": "feature_level_alignment",
-        "name": "Feature-level Alignment"
-    },
-    {
-        "slug": "output_level_regularization",
-        "name": "Output-level Regularization"
-    },
-    {
-        "slug": "prior_estimation",
-        "name": "Prior Estimation"
-    }
+    {"slug": "input_level_transformation", "name": "Input-level Transformation"},
+    {"slug": "feature_level_alignment", "name": "Feature-level Alignment"},
+    {"slug": "output_level_regularization", "name": "Output-level Regularization"},
+    {"slug": "prior_estimation", "name": "Prior Estimation"},
 ]
+
 _METHOD_DATA = [
     {
         "slug": "dg_tta",
@@ -68,14 +103,13 @@ _METHOD_DATA = [
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "MRI/CT",
-        "dimension": "3D",
         "status": "available",
         "summary": "Domain-generalization style test-time adaptation with consistency regularization and spatial/intensity augmentation utilities.",
-        "entries": [
-            "tta2d.py",
-            "tta3dCT.py",
-            "test_target_tta.py"
-        ]
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3dCT.py", "test_target_tta.py"],
+        },
     },
     {
         "slug": "sattca",
@@ -84,15 +118,13 @@ _METHOD_DATA = [
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "CT",
-        "dimension": "3D",
         "status": "available",
         "summary": "Scale-aware test-time click adaptation with click-mask generation, entropy/click losses, and 2D/3D entrypoints.",
-        "entries": [
-            "sattc.py",
-            "tta2d.py",
-            "tta3dCT.py",
-            "tta3dMRI.py"
-        ]
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["sattc.py", "tta2d.py"],
+            "three_d": ["tta3dCT.py", "tta3dMRI.py"],
+        },
     },
     {
         "slug": "grata",
@@ -100,32 +132,15 @@ _METHOD_DATA = [
         "source_dir": "GraTa",
         "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
-        "modality": "OCT",
-        "dimension": "2D",
+        "modality": "OCT/CT",
         "status": "available",
-        "summary": "Gradient-based test-time adaptation optimizer and 2D segmentation integration.",
-        "entries": [
-            "tta2d.py",
-            "test_target_tta.py",
-            "GraTa-master/TTA.py"
-        ]
-    },
-    {
-        "slug": "grata_3d",
-        "name": "GraTa-3D",
-        "source_dir": "GraTa-3d",
-        "paradigm_slug": "feature_level_alignment",
-        "paradigm": "Feature-level Alignment",
-        "modality": "CT",
-        "dimension": "3D",
-        "status": "available",
-        "summary": "3D adaptation wrapper around the GraTa optimizer for CT segmentation experiments.",
-        "entries": [
-            "tta3dCT.py",
-            "grata_3d.py",
-            "grata_wrapper.py",
-            "GraTa-master/TTA.py"
-        ]
+        "summary": "Gradient-based test-time adaptation optimizer with unified 2D OCT and 3D CT integration entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py", "test_target_tta.py", "GraTa-master/TTA.py"],
+            "three_d": ["tta3dCT.py", "grata_3d.py", "grata_wrapper.py", "GraTa-master/TTA.py"],
+        },
+        "aliases": {"grata_3d": "three_d"},
     },
     {
         "slug": "testfit",
@@ -134,14 +149,13 @@ _METHOD_DATA = [
         "paradigm_slug": "feature_level_alignment",
         "paradigm": "Feature-level Alignment",
         "modality": "CT/PATH",
-        "dimension": "General",
         "status": "available",
         "summary": "Patch/window-level online adaptation using entropy minimization over sliding-window inference.",
-        "entries": [
-            "tta2d.py",
-            "tta3dCT.py",
-            "testfit.py"
-        ]
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3dCT.py", "testfit.py"],
+        },
     },
     {
         "slug": "tent",
@@ -150,48 +164,40 @@ _METHOD_DATA = [
         "paradigm_slug": "output_level_regularization",
         "paradigm": "Output-level Regularization",
         "modality": "General Image",
-        "dimension": "General",
         "status": "available",
         "summary": "Fully test-time entropy minimization with batch-normalization affine parameter updates.",
-        "entries": [
-            "tent.py",
-            "tent2d.py",
-            "tta2d.py",
-            "tta3d.py",
-            "tta3dCT.py"
-        ]
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tent2d.py", "tta2d.py"],
+            "three_d": ["tent.py", "tta3d.py", "tta3dCT.py"],
+        },
     },
     {
-        "slug": "prosfda_2d",
-        "name": "ProSFDA-2D",
-        "source_dir": "ProSFDA2D",
+        "slug": "prosfda",
+        "name": "ProSFDA",
+        "source_dir": "ProSFDA",
         "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
-        "modality": "OCT",
-        "dimension": "2D",
+        "modality": "OCT/CT",
         "status": "available",
-        "summary": "Prompt-learning source-free adaptation implementation with PLS/FAS components for 2D segmentation.",
-        "entries": [
-            "tta2d.py",
-            "prosfda/training/run_training.py",
-            "prosfda/inference/run_inference.py"
-        ]
-    },
-    {
-        "slug": "prosfda_3d",
-        "name": "ProSFDA-3D",
-        "source_dir": "ProSFDA3D",
-        "paradigm_slug": "prior_estimation",
-        "paradigm": "Prior Estimation",
-        "modality": "CT",
-        "dimension": "3D",
-        "status": "available",
-        "summary": "Local 3D extension of ProSFDA with prompt-aware UNet variants and CT TTA trainer.",
-        "entries": [
-            "tta3dCT.py",
-            "prosfda/training/run_training.py",
-            "prosfda/inference/run_inference.py"
-        ]
+        "summary": "Prompt-learning source-free adaptation implementation with unified 2D and 3D entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": [
+                "tta2d.py",
+                "prosfda/training/run_training.py",
+                "prosfda/inference/run_inference.py",
+            ],
+            "three_d": [
+                "tta3dCT.py",
+                "prosfda/training/run_training.py",
+                "prosfda/inference/run_inference.py",
+            ],
+        },
+        "aliases": {
+            "prosfda_2d": "two_d",
+            "prosfda_3d": "three_d",
+        },
     },
     {
         "slug": "exploring_tta",
@@ -200,13 +206,12 @@ _METHOD_DATA = [
         "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
         "modality": "US",
-        "dimension": "3D",
         "status": "available",
         "summary": "Experiment harness for TENT, entropy-KL, histogram matching, and filter-inspection adaptation variants.",
-        "entries": [
-            "test_target_tta.py",
-            "tta3dCT.py"
-        ]
+        "dimensions": ["three_d"],
+        "entries_by_dimension": {
+            "three_d": ["test_target_tta.py", "tta3dCT.py"],
+        },
     },
     {
         "slug": "sfda_fsm",
@@ -215,19 +220,16 @@ _METHOD_DATA = [
         "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "modality": "Endoscope",
-        "dimension": "2D",
         "status": "available",
         "summary": "Source-free domain adaptation with Fourier style mining, domain inversion, CDD, and CADC components.",
-        "entries": [
-            "tta2d.py",
-            "tta2d_inf.py",
-            "tta3d.py",
-            "tta3dCT.py",
-            "tools/train_adapt.py",
-            "tools/test.py"
-        ]
-    }
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py", "tta2d_inf.py", "tools/train_adapt.py", "tools/test.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py"],
+        },
+    },
 ]
+
 TABLE_METHODS = [
     {
         "name": "AIF-SFDA",
@@ -235,7 +237,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "STDR",
@@ -243,7 +245,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "RSA",
@@ -251,7 +253,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
         "original_dimension": "2D",
-        "status": "skipped"
+        "status": "skipped",
     },
     {
         "name": "SFDA-FSM",
@@ -259,7 +261,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "Endoscope",
         "original_dimension": "2D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "DL-TTA",
@@ -267,7 +269,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "PATH",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "GraTa",
@@ -275,7 +277,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "UDA-MIMA",
@@ -283,7 +285,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "DeTTA",
@@ -291,7 +293,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "CT",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "TestFit",
@@ -299,7 +301,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "CT/PATH",
         "original_dimension": "General",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "DANN",
@@ -307,7 +309,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI",
         "original_dimension": "3D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "SmaRT",
@@ -315,7 +317,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "MRI",
         "original_dimension": "3D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "DG-TTA",
@@ -323,7 +325,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "SaTTCA",
@@ -331,7 +333,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "CT",
         "original_dimension": "3D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "UPL-SFDA",
@@ -339,7 +341,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "CMR/MRI",
         "original_dimension": "General",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "TENT",
@@ -347,7 +349,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "General Image",
         "original_dimension": "General",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "ProSFDA",
@@ -355,7 +357,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "ExploringTTA",
@@ -363,7 +365,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "US",
         "original_dimension": "3D",
-        "status": "available"
+        "status": "available",
     },
     {
         "name": "PASS",
@@ -371,7 +373,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "VPTTA",
@@ -379,7 +381,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing"
+        "status": "missing",
     },
     {
         "name": "AdaMI",
@@ -387,14 +389,25 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
-        "status": "missing"
-    }
+        "status": "missing",
+    },
 ]
+
 PARADIGMS = tuple(ParadigmSpec(**item) for item in _PARADIGM_DATA)
 METHODS = tuple(_build_spec(item) for item in _METHOD_DATA)
+METHODS_BY_SLUG = {method.slug: method for method in METHODS}
+
+METHOD_ALIASES = {}
+for method in METHODS:
+    for alias, dimension in method.aliases.items():
+        METHOD_ALIASES[alias] = (method.slug, dimension)
 
 
-def find_paradigm(key):
+def dimension_label(dimension: str) -> str:
+    return DIMENSION_LABELS[dimension]
+
+
+def find_paradigm(key: str) -> ParadigmSpec:
     normalized = _normalize(key)
     for paradigm in PARADIGMS:
         if normalized in {paradigm.slug, _normalize(paradigm.name)}:
@@ -402,28 +415,90 @@ def find_paradigm(key):
     raise KeyError(key)
 
 
-def find_method(key):
+def resolve_method(key: str) -> tuple[MethodSpec, str | None]:
     normalized = _normalize(key)
+    if normalized in METHOD_ALIASES:
+        slug, dimension = METHOD_ALIASES[normalized]
+        return METHODS_BY_SLUG[slug], dimension
     for method in METHODS:
         names = {method.slug, _normalize(method.name)}
-        if normalized in names or any(name.startswith(f'{normalized}_') for name in names):
-            return method
+        if normalized in names:
+            return method, None
     raise KeyError(key)
 
 
+def find_method(key: str) -> MethodSpec:
+    method, _ = resolve_method(key)
+    return method
+
+
+def method_dimensions(method: MethodSpec) -> tuple[str, ...]:
+    return method.dimensions
+
+
+def methods_by_paradigm(paradigm: str | None = None, dimension: str | None = None):
+    dimension = normalize_dimension(dimension)
+    if paradigm is None:
+        grouped = {p.slug: tuple(m for m in METHODS if m.paradigm_slug == p.slug) for p in PARADIGMS}
+        if dimension is None:
+            return grouped
+        return {
+            key: tuple(method for method in methods if dimension in method.dimensions)
+            for key, methods in grouped.items()
+        }
+    spec = find_paradigm(paradigm)
+    methods = tuple(method for method in METHODS if method.paradigm_slug == spec.slug)
+    if dimension is None:
+        return methods
+    return tuple(method for method in methods if dimension in method.dimensions)
+
+
 def available_methods():
-    return tuple(method for method in METHODS if method.status == 'available')
+    return tuple(method for method in METHODS if method.status == "available")
 
 
-def methods_by_paradigm(paradigm=None):
+def method_entries(method: MethodSpec, dimension: str | None = None):
+    if dimension is None:
+        return {item: method.entries_by_dimension[item] for item in method.dimensions}
+    normalized = normalize_dimension(dimension)
+    if normalized not in method.entries_by_dimension:
+        raise KeyError(dimension)
+    return method.entries_by_dimension[normalized]
+
+
+def resolve_entry(method: MethodSpec, entry: str, forced_dimension: str | None = None) -> tuple[str, str]:
+    entry = entry.strip().replace("\\", "/")
+    if not entry:
+        raise FileNotFoundError(entry)
+    if "/" in entry:
+        maybe_dimension, rel_entry = entry.split("/", 1)
+        try:
+            normalized_dimension = normalize_dimension(maybe_dimension)
+        except KeyError:
+            normalized_dimension = None
+        if normalized_dimension is not None:
+            if normalized_dimension not in method.entries_by_dimension:
+                raise KeyError(f"{method.slug} has no {maybe_dimension} entrypoint set")
+            if rel_entry not in method.entries_by_dimension[normalized_dimension]:
+                raise FileNotFoundError(entry)
+            return normalized_dimension, rel_entry
+    search_dimensions = (forced_dimension,) if forced_dimension else method.dimensions
+    matches = [
+        (dimension, entry)
+        for dimension in search_dimensions
+        if entry in method.entries_by_dimension.get(dimension, ())
+    ]
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        raise ValueError(
+            f"ambiguous entry '{entry}' for {method.slug}; use two_d/{entry} or three_d/{entry}"
+        )
+    raise FileNotFoundError(entry)
+
+
+def table_by_paradigm(paradigm: str | None = None):
     if paradigm is None:
-        return {p.slug: tuple(m for m in METHODS if m.paradigm_slug == p.slug) for p in PARADIGMS}
+        return {p.slug: tuple(row for row in TABLE_METHODS if row["paradigm_slug"] == p.slug) for p in PARADIGMS}
     spec = find_paradigm(paradigm)
-    return tuple(method for method in METHODS if method.paradigm_slug == spec.slug)
-
-
-def table_by_paradigm(paradigm=None):
-    if paradigm is None:
-        return {p.slug: tuple(row for row in TABLE_METHODS if row['paradigm_slug'] == p.slug) for p in PARADIGMS}
-    spec = find_paradigm(paradigm)
-    return tuple(row for row in TABLE_METHODS if row['paradigm_slug'] == spec.slug)
+    return tuple(row for row in TABLE_METHODS if row["paradigm_slug"] == spec.slug)

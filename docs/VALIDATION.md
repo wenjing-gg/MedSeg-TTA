@@ -1,44 +1,51 @@
 # Validation
 
-Validation was run locally with Python 3.12.2 after reorganizing the method package by adaptation paradigm.
+Validation was rerun locally after unifying top-level method directories and moving dimension handling into `two_d` / `three_d` subtrees.
+
+## Install
+
+```bash
+pip install -e .
+pip install -e .[runtime]
+```
+
+The `runtime` extra covers the currently required runtime dependencies that were missing in the local environment during the original package release, including `monai`, `dynamic-network-architectures`, `medpy`, `opencv-python-headless`, and `SimpleITK`.
 
 ## Passed
 
 ```bash
-python - <<'PY'
-from pathlib import Path
-import ast
-errors = []
-for p in sorted(Path('.').rglob('*.py')):
-    if '.git' in p.parts or '__pycache__' in p.parts:
-        continue
-    try:
-        ast.parse(p.read_text(encoding='utf-8'), filename=str(p))
-    except SyntaxError as e:
-        errors.append((str(p), e.lineno, e.offset, e.msg))
-print('checked', 341)
-print('errors', len(errors))
-PY
-python -m compileall medseg_tta DG-TTA SaTTCA GraTa GraTa-3d Testfit tent ProSFDA2D ProSFDA3D ExploringTTA SFDA-FSM
+python -m compileall medseg_tta DG-TTA GraTa ProSFDA SaTTCA Testfit tent SFDA-FSM ExploringTTA
 python -m medseg_tta list-paradigms
-python -m medseg_tta list-methods
-python -m medseg_tta table
-python -m medseg_tta show-method tent
+python -m medseg_tta list-methods --flat
+python -m medseg_tta list-methods --dimension 2d --flat
+python -m medseg_tta list-methods --dimension 3d --flat
+python -m medseg_tta show-method grata
+python -m medseg_tta show-method prosfda --dimension 3d
 python -m medseg_tta validate-structure
-python -m medseg_tta run-legacy tent tta3dCT.py --help
-python DG-TTA/tta2d.py --help
-python SaTTCA/tta3dCT.py --help
-python GraTa-3d/tta3dCT.py --help
-python Testfit/tta2d.py --help
-python tent/tta3dCT.py --help
-python ProSFDA2D/tta2d.py --help
-python ProSFDA3D/tta3dCT.py --help
-python ExploringTTA/test_target_tta.py --help
-python SFDA-FSM/tta2d.py --help
+python -m medseg_tta run-legacy grata_3d tta3dCT.py --help
+python GraTa/two_d/tta2d.py --help
+python GraTa/three_d/tta3dCT.py --help
+python ProSFDA/two_d/tta2d.py --help
+python ProSFDA/three_d/tta3dCT.py --help
+python SFDA-FSM/two_d/tools/test.py --help
+python DG-TTA/two_d/tta2d.py --help
+python DG-TTA/three_d/tta3dCT.py --help
 ```
 
-The generated Python files under `medseg_tta` and the top-level legacy wrapper directories were also checked for leading `#` comments and AST-detectable docstrings; both counts were zero.
+## Runtime Smoke
 
-## Runtime Scope
+After dependency installation, at least one 2D entrypoint and one 3D entrypoint should be executed without `--help`.
 
-Full inference is not part of this validation pass because the current local environment lacks optional runtime dependencies such as `monai`, `SimpleITK`, and `cv2`, and complete datasets/checkpoints are not guaranteed for every method.
+Recommended smoke commands:
+
+```bash
+python DG-TTA/two_d/tta2d.py --target_dir /tmp/missing_target --checkpoint_dir /tmp/medseg-tta-2d --model_path /tmp/missing.pth --gpu -1
+python tent/three_d/tta3dCT.py --target_dir /tmp/missing_target --tent_results_dir /tmp/medseg-tta-3d --checkpoint /tmp/missing.pth --gpu -1
+```
+
+These commands are expected to complete argument parsing, import resolution, and result-directory setup before failing on the intentionally missing data or checkpoint path.
+
+## Scope Notes
+
+- Full inference success still depends on method-specific datasets and checkpoints being available locally.
+- Some research scripts retain upstream hard-coded defaults; this refactor preserves algorithm code and focuses on structure, entrypoint routing, and import/runtime compatibility.

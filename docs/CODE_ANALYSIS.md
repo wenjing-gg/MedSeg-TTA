@@ -1,94 +1,97 @@
 # Code Analysis
 
-The processed implementation is organized by adaptation paradigm first, then by method. Sanitized legacy method code is stored under `medseg_tta/methods/<paradigm>/<method>/legacy`, while shared backbone copies remain under `medseg_tta/models`.
+The processed implementation is organized by adaptation paradigm first, then by canonical method name. Dimension handling now lives inside each method root.
 
-## Paradigm Organization
+## Canonical Layout
+
+All included methods follow this shape:
+
+```text
+medseg_tta/methods/<paradigm>/<method>/
+  __init__.py
+  two_d/            # optional
+    __init__.py
+    legacy/
+  three_d/          # optional
+    __init__.py
+    legacy/
+  common/           # optional, only when shared support code is needed
+    __init__.py
+    legacy/
+```
+
+Top-level wrapper directories mirror the same convention:
+
+```text
+<MethodName>/
+  two_d/
+  three_d/
+```
+
+## Method Summary
 
 ### Input-level Transformation
 
-- Method: SFDA-FSM
-- Package: `medseg_tta.methods.input_level_transformation.sfda_fsm`
-- Legacy root: `medseg_tta/methods/input_level_transformation/sfda_fsm/legacy`
-- Source directory: `SFDA-FSM`
-- Main entrypoints: `tta2d.py`, `tta2d_inf.py`, `tta3d.py`, `tta3dCT.py`, `tools/train_adapt.py`, `tools/test.py`
-- Role: Source-free domain adaptation with Fourier style mining, domain inversion, CDD, and CADC components.
+- SFDA-FSM
+  - Package: `medseg_tta.methods.input_level_transformation.sfda_fsm`
+  - Source directory: `SFDA-FSM`
+  - Dimensions: `two_d`, `three_d`
+  - Shared support code: `common/legacy`
 
 ### Feature-level Alignment
 
-- Method: GraTa
-- Package: `medseg_tta.methods.feature_level_alignment.grata`
-- Legacy root: `medseg_tta/methods/feature_level_alignment/grata/legacy`
-- Source directory: `GraTa`
-- Main entrypoints: `tta2d.py`, `test_target_tta.py`, `GraTa-master/TTA.py`
-- Role: Gradient-based test-time adaptation optimizer and 2D segmentation integration.
+- GraTa
+  - Package: `medseg_tta.methods.feature_level_alignment.grata`
+  - Source directory: `GraTa`
+  - Dimensions: `two_d`, `three_d`
+  - Notes: previous `grata` and `grata_3d` packages are unified; `grata_3d` remains as an import alias stub.
 
-- Method: GraTa-3D
-- Package: `medseg_tta.methods.feature_level_alignment.grata_3d`
-- Legacy root: `medseg_tta/methods/feature_level_alignment/grata_3d/legacy`
-- Source directory: `GraTa-3d`
-- Main entrypoints: `tta3dCT.py`, `grata_3d.py`, `grata_wrapper.py`, `GraTa-master/TTA.py`
-- Role: 3D adaptation wrapper around the GraTa optimizer for CT segmentation experiments.
-
-- Method: TestFit
-- Package: `medseg_tta.methods.feature_level_alignment.testfit`
-- Legacy root: `medseg_tta/methods/feature_level_alignment/testfit/legacy`
-- Source directory: `Testfit`
-- Main entrypoints: `tta2d.py`, `tta3dCT.py`, `testfit.py`
-- Role: Patch/window-level online adaptation using entropy minimization over sliding-window inference.
+- TestFit
+  - Package: `medseg_tta.methods.feature_level_alignment.testfit`
+  - Source directory: `Testfit`
+  - Dimensions: `two_d`, `three_d`
+  - Shared support code: `common/legacy`
 
 ### Output-level Regularization
 
-- Method: DG-TTA
-- Package: `medseg_tta.methods.output_level_regularization.dg_tta`
-- Legacy root: `medseg_tta/methods/output_level_regularization/dg_tta/legacy`
-- Source directory: `DG-TTA`
-- Main entrypoints: `tta2d.py`, `tta3dCT.py`, `test_target_tta.py`
-- Role: Domain-generalization style test-time adaptation with consistency regularization and spatial/intensity augmentation utilities.
+- DG-TTA
+  - Package: `medseg_tta.methods.output_level_regularization.dg_tta`
+  - Source directory: `DG-TTA`
+  - Dimensions: `two_d`, `three_d`
+  - Shared support code: `common/legacy`
 
-- Method: SaTTCA
-- Package: `medseg_tta.methods.output_level_regularization.sattca`
-- Legacy root: `medseg_tta/methods/output_level_regularization/sattca/legacy`
-- Source directory: `SaTTCA`
-- Main entrypoints: `sattc.py`, `tta2d.py`, `tta3dCT.py`, `tta3dMRI.py`
-- Role: Scale-aware test-time click adaptation with click-mask generation, entropy/click losses, and 2D/3D entrypoints.
+- SaTTCA
+  - Package: `medseg_tta.methods.output_level_regularization.sattca`
+  - Source directory: `SaTTCA`
+  - Dimensions: `two_d`, `three_d`
+  - Shared support code: `common/legacy`
 
-- Method: TENT
-- Package: `medseg_tta.methods.output_level_regularization.tent`
-- Legacy root: `medseg_tta/methods/output_level_regularization/tent/legacy`
-- Source directory: `tent`
-- Main entrypoints: `tent.py`, `tent2d.py`, `tta2d.py`, `tta3d.py`, `tta3dCT.py`
-- Role: Fully test-time entropy minimization with batch-normalization affine parameter updates.
+- TENT
+  - Package: `medseg_tta.methods.output_level_regularization.tent`
+  - Source directory: `tent`
+  - Dimensions: `two_d`, `three_d`
+  - Shared support code: `common/legacy`
 
 ### Prior Estimation
 
-- Method: ProSFDA-2D
-- Package: `medseg_tta.methods.prior_estimation.prosfda_2d`
-- Legacy root: `medseg_tta/methods/prior_estimation/prosfda_2d/legacy`
-- Source directory: `ProSFDA2D`
-- Main entrypoints: `tta2d.py`, `prosfda/training/run_training.py`, `prosfda/inference/run_inference.py`
-- Role: Prompt-learning source-free adaptation implementation with PLS/FAS components for 2D segmentation.
+- ProSFDA
+  - Package: `medseg_tta.methods.prior_estimation.prosfda`
+  - Source directory: `ProSFDA`
+  - Dimensions: `two_d`, `three_d`
+  - Notes: previous `prosfda_2d` and `prosfda_3d` packages are unified; both old package names remain as import alias stubs.
 
-- Method: ProSFDA-3D
-- Package: `medseg_tta.methods.prior_estimation.prosfda_3d`
-- Legacy root: `medseg_tta/methods/prior_estimation/prosfda_3d/legacy`
-- Source directory: `ProSFDA3D`
-- Main entrypoints: `tta3dCT.py`, `prosfda/training/run_training.py`, `prosfda/inference/run_inference.py`
-- Role: Local 3D extension of ProSFDA with prompt-aware UNet variants and CT TTA trainer.
-
-- Method: ExploringTTA
-- Package: `medseg_tta.methods.prior_estimation.exploring_tta`
-- Legacy root: `medseg_tta/methods/prior_estimation/exploring_tta/legacy`
-- Source directory: `ExploringTTA`
-- Main entrypoints: `test_target_tta.py`, `tta3dCT.py`
-- Role: Experiment harness for TENT, entropy-KL, histogram matching, and filter-inspection adaptation variants.
+- ExploringTTA
+  - Package: `medseg_tta.methods.prior_estimation.exploring_tta`
+  - Source directory: `ExploringTTA`
+  - Dimensions: `three_d`
 
 ## Shared Structure
 
-- `medseg_tta.registry` records paradigm metadata, method metadata, local availability, and package paths.
-- `medseg_tta.cli` exposes grouped method listing, table listing, method details, paradigm listing, structure validation, and legacy entrypoint forwarding.
-- `medseg_tta.validate` checks registry-to-filesystem consistency, package importability, legacy roots, and registered entrypoint files.
-- `medseg_tta.common.legacy` keeps old wrapper scripts lightweight and defers optional dependency imports until real execution.
-- `medseg_tta.models` contains sanitized common UNet and nnUNet backbones copied from the local TTA baseline implementation.
+- `medseg_tta.registry` records canonical method metadata, available dimensions, per-dimension entrypoints, and legacy aliases.
+- `medseg_tta.cli` exposes grouped method listing, dimension filtering, method details, structure validation, and legacy entrypoint forwarding.
+- `medseg_tta.validate` checks registry-to-filesystem consistency, package importability, dimension package importability, and registered entrypoint resolution.
+- `medseg_tta.common.legacy` keeps top-level wrappers lightweight and resolves dimension-aware legacy roots at runtime.
+- `medseg_tta.models` remains the shared backbone area; this refactor does not reorganize it beyond compatibility needs.
 
 ## Exclusions
 
