@@ -13,6 +13,10 @@ MedSeg-TTA is a benchmark for test-time adaptation in medical image segmentation
   <a href="https://wenjing-gg.github.io/MedSeg-TTA/">MEDSEG-TTA<br>LEADERBOARD</a>
 </h1>
 
+<p align="center">
+  <a href="https://wenjing-gg.github.io/MedSeg-TTA/">👉 Click here to explore the full leaderboard in detail.</a>
+</p>
+
 ## Benchmark Overview
 
 The benchmark unifies medical TTA evaluation around a shared surface that connects source-target dataset pairs, paradigm-level comparisons, and local method code roots.
