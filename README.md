@@ -78,6 +78,7 @@ After aligning class definitions between source and target domains, “Binary”
 ## Leaderboard
 
 The GitHub Pages MVP leaderboard lives at `https://wenjing-gg.github.io/MedSeg-TTA/`. It keeps the benchmark tables in a web format and adds direct jumps from local-method entries back into the corresponding repository folders.
+After GitHub Pages is enabled once in the repository settings with `GitHub Actions` as the source, pushes to `main` will redeploy this site automatically through `.github/workflows/deploy-pages.yml`.
 
 ## Repository Layout
 
