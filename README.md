@@ -10,7 +10,7 @@ MedSeg-TTA is a benchmark for test-time adaptation in medical image segmentation
 ## Leaderboard
 
 <h1 align="center">
-  <a href="https://wenjing-gg.github.io/MedSeg-TTA/">MEDSEG-TTA<br>LEADERBOARD</a>
+  <a href="https://wenjing-gg.github.io/MedSeg-TTA/">MEDSEG-TTA</a>
 </h1>
 
 <p align="center">
