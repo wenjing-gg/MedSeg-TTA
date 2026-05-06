@@ -39,7 +39,8 @@ MedSeg-TTA/
 │   ├── GraTa/
 │   └── Testfit/
 ├── input_level_transformation/
-│   └── SFDA-FSM/
+│   ├── SFDA-FSM/
+│   └── UPL-SFDA/
 ├── output_level_regularization/
 │   ├── DG-TTA/
 │   ├── SaTTCA/
