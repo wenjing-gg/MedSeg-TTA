@@ -20,6 +20,10 @@
       two_d: "input_level_transformation/SFDA-FSM/two_d",
       three_d: "input_level_transformation/SFDA-FSM/three_d"
     },
+    "UPL-SFDA": {
+      two_d: "input_level_transformation/UPL-SFDA/two_d",
+      three_d: "input_level_transformation/UPL-SFDA/three_d"
+    },
     GraTa: {
       two_d: "feature_level_alignment/GraTa/two_d",
       three_d: "feature_level_alignment/GraTa/three_d"

@@ -228,6 +228,21 @@ _METHOD_DATA = [
             "three_d": ["tta3d.py", "tta3dCT.py"],
         },
     },
+    {
+        "slug": "upl_sfda",
+        "name": "UPL-SFDA",
+        "source_dir": "input_level_transformation/UPL-SFDA",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
+        "modality": "CMR/MRI",
+        "status": "available",
+        "summary": "Uncertainty-aware pseudo-label guided source-free adaptation with bundled 2D and 3D legacy MRI segmentation entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["run_2d_upl.py"],
+            "three_d": ["UPL-SFDA_3D(Brats).py"],
+        },
+    },
 ]
 
 TABLE_METHODS = [
@@ -337,11 +352,11 @@ TABLE_METHODS = [
     },
     {
         "name": "UPL-SFDA",
-        "paradigm_slug": "output_level_regularization",
-        "paradigm": "Output-level Regularization",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
         "original_modality": "CMR/MRI",
         "original_dimension": "General",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "TENT",

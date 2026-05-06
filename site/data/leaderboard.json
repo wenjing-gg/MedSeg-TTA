@@ -123,10 +123,11 @@
       "codePath": "output_level_regularization/SaTTCA"
     },
     "UPL-SFDA": {
-      "paradigm": "output_level_regularization",
+      "paradigm": "input_level_transformation",
       "venue": "2023 TMI",
       "ref": "[49]",
-      "local": false
+      "local": true,
+      "codePath": "input_level_transformation/UPL-SFDA"
     },
     "TENT": {
       "paradigm": "output_level_regularization",
