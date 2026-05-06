@@ -161,7 +161,7 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ## Code Release
 
-This repository now includes a paradigm-organized Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps canonical method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/two_d|three_d|common`.
+This repository now includes a paradigm-organized Python package for the currently available MedSeg-TTA method implementations. The package keeps canonical method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/two_d|three_d|common`.
 
 The MVP leaderboard source for GitHub Pages lives in `site/` and is deployed from `main` via `.github/workflows/deploy-pages.yml`.
 
