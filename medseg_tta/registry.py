@@ -239,8 +239,8 @@ _METHOD_DATA = [
         "summary": "Uncertainty-aware pseudo-label guided source-free adaptation with bundled 2D and 3D legacy MRI segmentation entrypoints.",
         "dimensions": ["two_d", "three_d"],
         "entries_by_dimension": {
-            "two_d": ["run_2d_upl.py"],
-            "three_d": ["UPL-SFDA_3D(Brats).py"],
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py"],
         },
     },
 ]

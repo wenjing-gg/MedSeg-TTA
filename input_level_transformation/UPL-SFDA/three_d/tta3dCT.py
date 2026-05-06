@@ -18,4 +18,4 @@ from medseg_tta.common.legacy import run_legacy_entrypoint
 
 
 if __name__ == "__main__":
-    raise SystemExit(run_legacy_entrypoint("upl_sfda", "three_d/tta3d.py"))
+    raise SystemExit(run_legacy_entrypoint("upl_sfda", "three_d/tta3dCT.py"))
