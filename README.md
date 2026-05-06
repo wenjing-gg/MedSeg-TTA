@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-MedSeg-TTA-181717?logo=github)](https://github.com/wenjing-gg/MedSeg-TTA)
 [![arXiv](https://img.shields.io/badge/arXiv-Coming%20soon-lightgrey?logo=arxiv)](#)
 [![Modalities](https://img.shields.io/badge/Modalities-7-blue)](#)
-[![Leaderboard](https://img.shields.io/badge/Leaderboard-Coming%20soon-orange)](#)
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-Live-orange)](https://wenjing-gg.github.io/MedSeg-TTA/)
 [![License](https://img.shields.io/badge/License-MIT-green)](#)
 
 MedSeg-TTA is an open benchmark for evaluating test-time adaptation (TTA) methods in medical image segmentation. It standardizes data, metrics, and protocols across modalities, organs, and tasks, enabling fair and reproducible comparisons under strict constraints (fixed backbone, no source-domain access, and no implicit leakage).
@@ -69,11 +69,22 @@ After aligning class definitions between source and target domains, “Binary”
 
 4. All runnable wrapper entrypoints are grouped by paradigm first, then by method name, and dimension-specific entrypoints live inside `two_d/` and `three_d/`.
 
+5. Open the public MVP leaderboard:
+
+  ```text
+  https://wenjing-gg.github.io/MedSeg-TTA/
+  ```
+
+## Leaderboard
+
+The GitHub Pages MVP leaderboard lives at `https://wenjing-gg.github.io/MedSeg-TTA/`. It keeps the benchmark tables in a web format and adds direct jumps from local-method entries back into the corresponding repository folders.
+
 ## Repository Layout
 
 ```text
 MedSeg-TTA/
 ├── medseg_tta/
+├── site/
 ├── feature_level_alignment/
 │   ├── GraTa/
 │   └── Testfit/
@@ -139,7 +150,7 @@ If you find this project useful, please cite:
 
 - Repository: https://github.com/wenjing-gg/MedSeg-TTA
 - Paper (arXiv): coming soon
-- Leaderboard: coming soon
+- Leaderboard: https://wenjing-gg.github.io/MedSeg-TTA/
 
 ## License
 
@@ -150,6 +161,8 @@ This project is released under the MIT License. See `LICENSE` for details.
 ## Code Release
 
 This repository now includes a paradigm-organized Python package for the locally available MedSeg-TTA method implementations, excluding RSA by request. The package keeps canonical method metadata in `medseg_tta.registry`, provides `python -m medseg_tta list-paradigms`, `python -m medseg_tta list-methods`, and stores sanitized method code under `medseg_tta/methods/<paradigm>/<method>/two_d|three_d|common`.
+
+The MVP leaderboard source for GitHub Pages lives in `site/` and is deployed from `main` via `.github/workflows/deploy-pages.yml`.
 
 Paradigm directories:
 

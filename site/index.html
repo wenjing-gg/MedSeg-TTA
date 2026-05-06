@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MedSeg-TTA Leaderboard</title>
+    <meta
+      name="description"
+      content="A paper-inspired MVP leaderboard for MedSeg-TTA, covering paradigm-level, method-level, and modality-level Dice/HD95 benchmark views."
+    >
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="topbar__eyebrow">MedSeg-TTA</span>
+        <strong class="topbar__title">Leaderboard MVP</strong>
+      </div>
+      <nav class="topbar__nav" aria-label="Section navigation">
+        <a class="topbar__nav-link" href="#overview" data-view-link="overview">Overview</a>
+        <a class="topbar__nav-link" href="#summary" data-view-link="summary">Methods</a>
+        <a class="topbar__nav-link" href="#modalities" data-view-link="modalities">Modalities</a>
+        <a class="topbar__nav-link" href="#local-code">Code Jump</a>
+      </nav>
+      <div class="topbar__actions">
+        <a class="topbar__link" href="https://github.com/wenjing-gg/MedSeg-TTA" target="_blank" rel="noreferrer">GitHub Repo</a>
+        <a class="topbar__link" href="./data/leaderboard.json" target="_blank" rel="noreferrer">Open JSON</a>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero band">
+        <div class="hero__copy">
+          <p class="section-kicker">Paper-inspired benchmark surface</p>
+          <h1 class="hero__title">A live benchmark surface for cross-domain medical TTA</h1>
+          <p class="hero__lede" id="hero-lede">
+            Loading benchmark summary...
+          </p>
+          <div class="hero__actions">
+            <a class="jump-link jump-link--primary" href="#summary" data-view-link="summary">Browse methods</a>
+            <a class="jump-link" href="#modalities" data-view-link="modalities">Open modality drilldown</a>
+            <a class="jump-link" href="#local-code">Jump to local code</a>
+          </div>
+          <div class="hero__stats" id="hero-stats"></div>
+        </div>
+        <figure class="hero__figure">
+          <img src="./assets/paradigm.png" alt="MedSeg-TTA paradigm overview figure">
+          <figcaption>The repository taxonomy figure stays visible so the leaderboard never loses the benchmark's four-paradigm frame.</figcaption>
+        </figure>
+      </section>
+
+      <section class="signal band">
+        <div class="section-head section-head--tight">
+          <div>
+            <p class="section-kicker">MVP surface</p>
+            <h2 class="section-title">What this first leaderboard already does well</h2>
+            <p class="section-text">
+              The page exposes the benchmark at three levels: paradigm trends, overall method ranking, and modality-specific drilldown. Local implementations also keep direct GitHub jumps so the board stays connected to runnable code.
+            </p>
+          </div>
+        </div>
+        <div class="spotlight-grid" id="spotlight-grid"></div>
+      </section>
+
+      <section class="legend band band--soft">
+        <div class="legend__group">
+          <span class="legend__label">Rank colors</span>
+          <span class="swatch swatch--first">Best</span>
+          <span class="swatch swatch--second">Second</span>
+          <span class="swatch swatch--third">Third</span>
+          <span class="swatch swatch--muted">Below target-domain baseline</span>
+        </div>
+        <div class="legend__group" id="paradigm-legend"></div>
+        <div class="legend__group legend__group--note" id="scope-note"></div>
+      </section>
+
+      <section class="controls band">
+        <div class="controls__inner">
+          <nav class="view-tabs" aria-label="Leaderboard views">
+            <button type="button" class="view-tabs__button is-active" data-view="overview">Paradigm Overview</button>
+            <button type="button" class="view-tabs__button" data-view="summary">Method Summary</button>
+            <button type="button" class="view-tabs__button" data-view="modalities">Modality Drilldown</button>
+          </nav>
+          <p class="controls__note">
+            Use the view switcher for the main leaderboard surfaces, then scroll further for direct repository jumps into the local method folders.
+          </p>
+        </div>
+      </section>
+
+      <section class="view-section" id="overview"></section>
+      <section class="view-section is-hidden" id="summary"></section>
+      <section class="view-section is-hidden" id="modalities">
+        <div class="subcontrols">
+          <div class="subcontrols__row">
+            <div class="segmented segmented--wrap" id="modality-tabs" aria-label="Modality selector"></div>
+            <div class="segmented" id="sort-tabs" aria-label="Sort selector"></div>
+          </div>
+          <div class="subcontrols__row">
+            <div class="segmented" id="region-tabs" aria-label="MRI region selector"></div>
+          </div>
+        </div>
+        <div class="context-strip" id="modality-context"></div>
+        <div id="modality-table"></div>
+      </section>
+
+      <section class="local-code band" id="local-code">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">GitHub jump map</p>
+            <h2 class="section-title">Local implementations organized by paradigm</h2>
+            <p class="section-text">
+              Every method with local code links back to its canonical repository folder, with dimension-specific jumps for `two_d/` and `three_d/` where available.
+            </p>
+          </div>
+        </div>
+        <div class="local-grid" id="local-grid"></div>
+      </section>
+
+      <section class="provenance band" id="about">
+        <div class="provenance__copy">
+          <p class="section-kicker">Why this shape</p>
+          <h2 class="section-title">Academic tables, turned into a workable first release</h2>
+          <p>
+            The interface keeps the visual semantics from the benchmark figures: paradigm symbols,
+            top-three cell highlights, baseline-aware gray rows, and modality-specific drilldown.
+            This MVP focuses on the benchmark's primary metrics, Dice and HD95, so the board stays readable while still feeling rigorous.
+          </p>
+        </div>
+        <figure class="provenance__figure">
+          <img src="./assets/framework.png" alt="MedSeg-TTA benchmark framework figure">
+          <figcaption>The framework figure remains visible here as context for how leaderboard entries map back to the benchmark setup.</figcaption>
+        </figure>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__left">
+        <strong>MedSeg-TTA Leaderboard MVP</strong>
+        <span id="footer-updated">Updated from benchmark tables.</span>
+      </div>
+      <div class="footer__right">
+        <a href="https://wenjing-gg.github.io/MedSeg-TTA/" target="_blank" rel="noreferrer">Pages URL</a>
+        <a href="https://github.com/wenjing-gg/MedSeg-TTA" target="_blank" rel="noreferrer">Repository</a>
+      </div>
+    </footer>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

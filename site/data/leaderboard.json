@@ -1,0 +1,1348 @@
+{
+  "meta": {
+    "title": "MedSeg-TTA Leaderboard",
+    "subtitle": "A paper-inspired MVP leaderboard for paradigm, method, and modality-level test-time adaptation benchmarking across seven medical imaging modalities, with direct GitHub jumps for local implementations.",
+    "updated": "2026-05-06",
+    "mvpScope": "This MVP surfaces the primary benchmark metrics Dice and HD95, and keeps local-method links pointed at the canonical paradigm/method folders. Secondary metrics such as JI, Sensitivity, and PPV can be layered in later without changing the layout.",
+    "repositoryUrl": "https://github.com/wenjing-gg/MedSeg-TTA",
+    "pagesUrl": "https://wenjing-gg.github.io/MedSeg-TTA/",
+    "sources": [
+      "Table 3: Paradigm-level performance across modalities",
+      "Table 4: Method-level benchmark summary across seven modalities",
+      "Tables 7-14: Modality-specific TTA performance (Dice and HD95 used in this MVP)"
+    ]
+  },
+  "paradigms": {
+    "input_level_transformation": {
+      "label": "Input-level Transformation",
+      "shortLabel": "Input-level",
+      "symbol": "♠",
+      "color": "#161616"
+    },
+    "feature_level_alignment": {
+      "label": "Feature-level Alignment",
+      "shortLabel": "Feature-level",
+      "symbol": "♣",
+      "color": "#21b52f"
+    },
+    "output_level_regularization": {
+      "label": "Output-level Regularization",
+      "shortLabel": "Output-level",
+      "symbol": "♥",
+      "color": "#f04e33"
+    },
+    "prior_estimation": {
+      "label": "Prior Estimation",
+      "shortLabel": "Prior Estimation",
+      "symbol": "♦",
+      "color": "#3156ff"
+    }
+  },
+  "methods": {
+    "AIF-SFDA": {
+      "paradigm": "input_level_transformation",
+      "venue": "2025 AAAI",
+      "ref": "[19]",
+      "local": false
+    },
+    "STDR": {
+      "paradigm": "input_level_transformation",
+      "venue": "2024 TMI",
+      "ref": "[42]",
+      "local": false
+    },
+    "RSA": {
+      "paradigm": "input_level_transformation",
+      "venue": "2024 MICCAI",
+      "ref": "[54]",
+      "local": false
+    },
+    "SFDA-FSM": {
+      "paradigm": "input_level_transformation",
+      "venue": "2022 MIA",
+      "ref": "[51]",
+      "local": true,
+      "codePath": "input_level_transformation/SFDA-FSM"
+    },
+    "DL-TTA": {
+      "paradigm": "input_level_transformation",
+      "venue": "2022 TMI",
+      "ref": "[50]",
+      "local": false
+    },
+    "GraTa": {
+      "paradigm": "feature_level_alignment",
+      "venue": "2025 AAAI",
+      "ref": "[6]",
+      "local": true,
+      "codePath": "feature_level_alignment/GraTa"
+    },
+    "UDA-MIMA": {
+      "paradigm": "feature_level_alignment",
+      "venue": "2024 CMPB",
+      "ref": "[15]",
+      "local": false
+    },
+    "DeTTA": {
+      "paradigm": "feature_level_alignment",
+      "venue": "2024 WACV",
+      "ref": "[48]",
+      "local": false
+    },
+    "TestFit": {
+      "paradigm": "feature_level_alignment",
+      "venue": "2024 MIA",
+      "ref": "[58]",
+      "local": true,
+      "codePath": "feature_level_alignment/Testfit"
+    },
+    "DANN": {
+      "paradigm": "feature_level_alignment",
+      "venue": "2016 JMLR",
+      "ref": "[9]",
+      "local": false
+    },
+    "SmaRT": {
+      "paradigm": "output_level_regularization",
+      "venue": "2025 arXiv",
+      "ref": "[45]",
+      "local": false
+    },
+    "DG-TTA": {
+      "paradigm": "output_level_regularization",
+      "venue": "2023 arXiv",
+      "ref": "[47]",
+      "local": true,
+      "codePath": "output_level_regularization/DG-TTA"
+    },
+    "SaTTCA": {
+      "paradigm": "output_level_regularization",
+      "venue": "2023 MICCAI",
+      "ref": "[23]",
+      "local": true,
+      "codePath": "output_level_regularization/SaTTCA"
+    },
+    "UPL-SFDA": {
+      "paradigm": "output_level_regularization",
+      "venue": "2023 TMI",
+      "ref": "[49]",
+      "local": false
+    },
+    "TENT": {
+      "paradigm": "output_level_regularization",
+      "venue": "2021 ICLR",
+      "ref": "[41]",
+      "local": true,
+      "codePath": "output_level_regularization/tent"
+    },
+    "ProSFDA": {
+      "paradigm": "prior_estimation",
+      "venue": "2025 PR",
+      "ref": "[16]",
+      "local": true,
+      "codePath": "prior_estimation/ProSFDA"
+    },
+    "ExploringTTA": {
+      "paradigm": "prior_estimation",
+      "venue": "2025 ISBI",
+      "ref": "[33]",
+      "local": true,
+      "codePath": "prior_estimation/ExploringTTA"
+    },
+    "PASS": {
+      "paradigm": "prior_estimation",
+      "venue": "2024 TMI",
+      "ref": "[56]",
+      "local": false
+    },
+    "VPTTA": {
+      "paradigm": "prior_estimation",
+      "venue": "2024 CVPR",
+      "ref": "[5]",
+      "local": false
+    },
+    "AdaMI": {
+      "paradigm": "prior_estimation",
+      "venue": "2022 MICCAI",
+      "ref": "[2]",
+      "local": false
+    }
+  },
+  "paradigmOverview": [
+    {
+      "domainShift": "Strong",
+      "modality": "US",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.7215,
+          "target": 0.4811
+        },
+        "hd95": {
+          "intra": 31.01,
+          "target": 62.78
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.5757,
+          "hd95": 49.26
+        },
+        "feature_level_alignment": {
+          "dice": 0.5539,
+          "hd95": 50.83
+        },
+        "output_level_regularization": {
+          "dice": 0.5235,
+          "hd95": 58.03
+        },
+        "prior_estimation": {
+          "dice": 0.5776,
+          "hd95": 46.95
+        }
+      }
+    },
+    {
+      "domainShift": "Strong",
+      "modality": "MRI",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.7049,
+          "target": 0.5951
+        },
+        "hd95": {
+          "intra": 3.33,
+          "target": 23.04
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.6411,
+          "hd95": 13.72
+        },
+        "feature_level_alignment": {
+          "dice": 0.6269,
+          "hd95": 9.67
+        },
+        "output_level_regularization": {
+          "dice": 0.6399,
+          "hd95": 7.98
+        },
+        "prior_estimation": {
+          "dice": 0.6395,
+          "hd95": 6.96
+        }
+      }
+    },
+    {
+      "domainShift": "Strong",
+      "modality": "CT",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.8949,
+          "target": 0.6595
+        },
+        "hd95": {
+          "intra": 1.63,
+          "target": 13.91
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.7156,
+          "hd95": 10.32
+        },
+        "feature_level_alignment": {
+          "dice": 0.6874,
+          "hd95": 13.56
+        },
+        "output_level_regularization": {
+          "dice": 0.7240,
+          "hd95": 14.24
+        },
+        "prior_estimation": {
+          "dice": 0.6969,
+          "hd95": 14.01
+        }
+      }
+    },
+    {
+      "domainShift": "Mild",
+      "modality": "OCT",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.9550,
+          "target": 0.8951
+        },
+        "hd95": {
+          "intra": 0.41,
+          "target": 13.32
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.9075,
+          "hd95": 9.77
+        },
+        "feature_level_alignment": {
+          "dice": 0.9000,
+          "hd95": 10.28
+        },
+        "output_level_regularization": {
+          "dice": 0.9051,
+          "hd95": 8.02
+        },
+        "prior_estimation": {
+          "dice": 0.8981,
+          "hd95": 11.17
+        }
+      }
+    },
+    {
+      "domainShift": "Mild",
+      "modality": "PATH",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.8360,
+          "target": 0.8026
+        },
+        "hd95": {
+          "intra": 32.66,
+          "target": 33.66
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.8107,
+          "hd95": 31.63
+        },
+        "feature_level_alignment": {
+          "dice": 0.7930,
+          "hd95": 35.39
+        },
+        "output_level_regularization": {
+          "dice": 0.8008,
+          "hd95": 32.14
+        },
+        "prior_estimation": {
+          "dice": 0.7981,
+          "hd95": 33.98
+        }
+      }
+    },
+    {
+      "domainShift": "Mild",
+      "modality": "DER",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.9280,
+          "target": 0.8532
+        },
+        "hd95": {
+          "intra": 2.33,
+          "target": 13.78
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.8672,
+          "hd95": 12.68
+        },
+        "feature_level_alignment": {
+          "dice": 0.8404,
+          "hd95": 15.59
+        },
+        "output_level_regularization": {
+          "dice": 0.8606,
+          "hd95": 13.92
+        },
+        "prior_estimation": {
+          "dice": 0.8526,
+          "hd95": 15.78
+        }
+      }
+    },
+    {
+      "domainShift": "Mild",
+      "modality": "CXR",
+      "crossDomain": {
+        "dice": {
+          "intra": 0.9557,
+          "target": 0.9093
+        },
+        "hd95": {
+          "intra": 1.02,
+          "target": 5.15
+        }
+      },
+      "scores": {
+        "input_level_transformation": {
+          "dice": 0.9308,
+          "hd95": 3.36
+        },
+        "feature_level_alignment": {
+          "dice": 0.9194,
+          "hd95": 4.69
+        },
+        "output_level_regularization": {
+          "dice": 0.9284,
+          "hd95": 3.87
+        },
+        "prior_estimation": {
+          "dice": 0.9285,
+          "hd95": 3.66
+        }
+      }
+    }
+  ],
+  "methodSummary": [
+    {
+      "method": "SFDA-FSM",
+      "meanDice": 0.8477,
+      "meanHd95": 9.56
+    },
+    {
+      "method": "AIF-SFDA",
+      "meanDice": 0.7741,
+      "meanHd95": 17.05
+    },
+    {
+      "method": "STDR",
+      "meanDice": 0.7578,
+      "meanHd95": 21.31
+    },
+    {
+      "method": "DL-TTA",
+      "meanDice": 0.7551,
+      "meanHd95": 21.05
+    },
+    {
+      "method": "RSA",
+      "meanDice": 0.7486,
+      "meanHd95": 24.41
+    },
+    {
+      "method": "GraTa",
+      "meanDice": 0.7664,
+      "meanHd95": 20.24
+    },
+    {
+      "method": "UDA-MIMA",
+      "meanDice": 0.7622,
+      "meanHd95": 18.99
+    },
+    {
+      "method": "DANN",
+      "meanDice": 0.7589,
+      "meanHd95": 20.05
+    },
+    {
+      "method": "DeTTA",
+      "meanDice": 0.7567,
+      "meanHd95": 21.00
+    },
+    {
+      "method": "TestFit",
+      "meanDice": 0.7529,
+      "meanHd95": 20.19
+    },
+    {
+      "method": "SmaRT",
+      "meanDice": 0.8284,
+      "meanHd95": 12.72
+    },
+    {
+      "method": "DG-TTA",
+      "meanDice": 0.7847,
+      "meanHd95": 19.52
+    },
+    {
+      "method": "TENT",
+      "meanDice": 0.7677,
+      "meanHd95": 20.19
+    },
+    {
+      "method": "SaTTCA",
+      "meanDice": 0.7610,
+      "meanHd95": 19.51
+    },
+    {
+      "method": "UPL-SFDA",
+      "meanDice": 0.7560,
+      "meanHd95": 19.75
+    },
+    {
+      "method": "PASS",
+      "meanDice": 0.7814,
+      "meanHd95": 15.99
+    },
+    {
+      "method": "ProSFDA",
+      "meanDice": 0.7734,
+      "meanHd95": 18.08
+    },
+    {
+      "method": "AdaMI",
+      "meanDice": 0.7677,
+      "meanHd95": 19.25
+    },
+    {
+      "method": "ExploringTTA",
+      "meanDice": 0.7654,
+      "meanHd95": 20.44
+    },
+    {
+      "method": "VPTTA",
+      "meanDice": 0.7616,
+      "meanHd95": 20.89
+    }
+  ],
+  "modalityLeaderboards": {
+    "OCT": {
+      "domainShift": "Mild",
+      "baseline": {
+        "intra": {
+          "dice": 0.9550,
+          "hd95": 0.41
+        },
+        "target": {
+          "dice": 0.8951,
+          "hd95": 13.32
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.8978,
+          "hd95": 8.12
+        },
+        "STDR": {
+          "dice": 0.9171,
+          "hd95": 7.85
+        },
+        "RSA": {
+          "dice": 0.8981,
+          "hd95": 13.01
+        },
+        "SFDA-FSM": {
+          "dice": 0.9319,
+          "hd95": 9.87
+        },
+        "DL-TTA": {
+          "dice": 0.8927,
+          "hd95": 10.01
+        },
+        "GraTa": {
+          "dice": 0.9073,
+          "hd95": 6.75
+        },
+        "UDA-MIMA": {
+          "dice": 0.8911,
+          "hd95": 11.99
+        },
+        "DeTTA": {
+          "dice": 0.9069,
+          "hd95": 9.52
+        },
+        "TestFit": {
+          "dice": 0.8930,
+          "hd95": 13.83
+        },
+        "DANN": {
+          "dice": 0.9015,
+          "hd95": 9.30
+        },
+        "SmaRT": {
+          "dice": 0.8993,
+          "hd95": 7.49
+        },
+        "DG-TTA": {
+          "dice": 0.9053,
+          "hd95": 9.96
+        },
+        "SaTTCA": {
+          "dice": 0.9030,
+          "hd95": 8.52
+        },
+        "UPL-SFDA": {
+          "dice": 0.9099,
+          "hd95": 6.40
+        },
+        "TENT": {
+          "dice": 0.9022,
+          "hd95": 7.22
+        },
+        "ProSFDA": {
+          "dice": 0.8973,
+          "hd95": 11.33
+        },
+        "ExploringTTA": {
+          "dice": 0.8934,
+          "hd95": 11.11
+        },
+        "PASS": {
+          "dice": 0.9009,
+          "hd95": 9.33
+        },
+        "VPTTA": {
+          "dice": 0.8975,
+          "hd95": 13.83
+        },
+        "AdaMI": {
+          "dice": 0.9013,
+          "hd95": 10.25
+        }
+      }
+    },
+    "PATH": {
+      "domainShift": "Mild",
+      "baseline": {
+        "intra": {
+          "dice": 0.8360,
+          "hd95": 32.66
+        },
+        "target": {
+          "dice": 0.8026,
+          "hd95": 33.66
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.8082,
+          "hd95": 33.46
+        },
+        "STDR": {
+          "dice": 0.7993,
+          "hd95": 34.81
+        },
+        "RSA": {
+          "dice": 0.7810,
+          "hd95": 35.72
+        },
+        "SFDA-FSM": {
+          "dice": 0.8713,
+          "hd95": 19.56
+        },
+        "DL-TTA": {
+          "dice": 0.7935,
+          "hd95": 34.62
+        },
+        "GraTa": {
+          "dice": 0.7892,
+          "hd95": 36.49
+        },
+        "UDA-MIMA": {
+          "dice": 0.7890,
+          "hd95": 33.16
+        },
+        "DeTTA": {
+          "dice": 0.8035,
+          "hd95": 35.49
+        },
+        "TestFit": {
+          "dice": 0.8037,
+          "hd95": 33.45
+        },
+        "DANN": {
+          "dice": 0.7794,
+          "hd95": 38.37
+        },
+        "SmaRT": {
+          "dice": 0.7385,
+          "hd95": 43.84
+        },
+        "DG-TTA": {
+          "dice": 0.8018,
+          "hd95": 33.76
+        },
+        "SaTTCA": {
+          "dice": 0.7686,
+          "hd95": 40.49
+        },
+        "UPL-SFDA": {
+          "dice": 0.8438,
+          "hd95": 17.81
+        },
+        "TENT": {
+          "dice": 0.7890,
+          "hd95": 36.50
+        },
+        "ProSFDA": {
+          "dice": 0.8263,
+          "hd95": 26.95
+        },
+        "ExploringTTA": {
+          "dice": 0.7835,
+          "hd95": 36.16
+        },
+        "PASS": {
+          "dice": 0.7938,
+          "hd95": 34.12
+        },
+        "VPTTA": {
+          "dice": 0.7938,
+          "hd95": 38.45
+        },
+        "AdaMI": {
+          "dice": 0.7930,
+          "hd95": 34.21
+        }
+      }
+    },
+    "DER": {
+      "domainShift": "Mild",
+      "baseline": {
+        "intra": {
+          "dice": 0.9280,
+          "hd95": 2.33
+        },
+        "target": {
+          "dice": 0.8532,
+          "hd95": 13.78
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.8538,
+          "hd95": 13.66
+        },
+        "STDR": {
+          "dice": 0.8526,
+          "hd95": 15.65
+        },
+        "RSA": {
+          "dice": 0.8517,
+          "hd95": 16.85
+        },
+        "SFDA-FSM": {
+          "dice": 0.9258,
+          "hd95": 3.58
+        },
+        "DL-TTA": {
+          "dice": 0.8478,
+          "hd95": 13.64
+        },
+        "GraTa": {
+          "dice": 0.8516,
+          "hd95": 13.96
+        },
+        "UDA-MIMA": {
+          "dice": 0.7913,
+          "hd95": 21.91
+        },
+        "DeTTA": {
+          "dice": 0.8479,
+          "hd95": 15.84
+        },
+        "TestFit": {
+          "dice": 0.8686,
+          "hd95": 11.52
+        },
+        "DANN": {
+          "dice": 0.8425,
+          "hd95": 14.71
+        },
+        "SmaRT": {
+          "dice": 0.9108,
+          "hd95": 6.19
+        },
+        "DG-TTA": {
+          "dice": 0.8725,
+          "hd95": 13.37
+        },
+        "SaTTCA": {
+          "dice": 0.8426,
+          "hd95": 14.71
+        },
+        "UPL-SFDA": {
+          "dice": 0.8683,
+          "hd95": 13.26
+        },
+        "TENT": {
+          "dice": 0.8558,
+          "hd95": 14.33
+        },
+        "ProSFDA": {
+          "dice": 0.8696,
+          "hd95": 14.41
+        },
+        "ExploringTTA": {
+          "dice": 0.8519,
+          "hd95": 14.81
+        },
+        "PASS": {
+          "dice": 0.8426,
+          "hd95": 15.90
+        },
+        "VPTTA": {
+          "dice": 0.8562,
+          "hd95": 16.96
+        },
+        "AdaMI": {
+          "dice": 0.8425,
+          "hd95": 16.84
+        }
+      }
+    },
+    "CXR": {
+      "domainShift": "Mild",
+      "baseline": {
+        "intra": {
+          "dice": 0.9557,
+          "hd95": 1.02
+        },
+        "target": {
+          "dice": 0.9093,
+          "hd95": 5.15
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.9274,
+          "hd95": 3.39
+        },
+        "STDR": {
+          "dice": 0.9260,
+          "hd95": 3.87
+        },
+        "RSA": {
+          "dice": 0.9183,
+          "hd95": 4.64
+        },
+        "SFDA-FSM": {
+          "dice": 0.9663,
+          "hd95": 0.56
+        },
+        "DL-TTA": {
+          "dice": 0.9162,
+          "hd95": 4.36
+        },
+        "GraTa": {
+          "dice": 0.9212,
+          "hd95": 4.73
+        },
+        "UDA-MIMA": {
+          "dice": 0.9199,
+          "hd95": 5.26
+        },
+        "DeTTA": {
+          "dice": 0.9095,
+          "hd95": 4.35
+        },
+        "TestFit": {
+          "dice": 0.9120,
+          "hd95": 5.59
+        },
+        "DANN": {
+          "dice": 0.9344,
+          "hd95": 3.51
+        },
+        "SmaRT": {
+          "dice": 0.9501,
+          "hd95": 1.77
+        },
+        "DG-TTA": {
+          "dice": 0.9420,
+          "hd95": 2.92
+        },
+        "SaTTCA": {
+          "dice": 0.9348,
+          "hd95": 3.40
+        },
+        "UPL-SFDA": {
+          "dice": 0.9042,
+          "hd95": 5.47
+        },
+        "TENT": {
+          "dice": 0.9325,
+          "hd95": 3.69
+        },
+        "ProSFDA": {
+          "dice": 0.9451,
+          "hd95": 2.56
+        },
+        "ExploringTTA": {
+          "dice": 0.9286,
+          "hd95": 3.89
+        },
+        "PASS": {
+          "dice": 0.9346,
+          "hd95": 3.50
+        },
+        "VPTTA": {
+          "dice": 0.8978,
+          "hd95": 4.87
+        },
+        "AdaMI": {
+          "dice": 0.9363,
+          "hd95": 3.49
+        }
+      }
+    },
+    "CT": {
+      "domainShift": "Strong",
+      "baseline": {
+        "intra": {
+          "dice": 0.8949,
+          "hd95": 1.63
+        },
+        "target": {
+          "dice": 0.6595,
+          "hd95": 13.91
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.7018,
+          "hd95": 9.39
+        },
+        "STDR": {
+          "dice": 0.7255,
+          "hd95": 11.34
+        },
+        "RSA": {
+          "dice": 0.6973,
+          "hd95": 12.39
+        },
+        "SFDA-FSM": {
+          "dice": 0.7780,
+          "hd95": 6.88
+        },
+        "DL-TTA": {
+          "dice": 0.6752,
+          "hd95": 11.58
+        },
+        "GraTa": {
+          "dice": 0.6916,
+          "hd95": 23.12
+        },
+        "UDA-MIMA": {
+          "dice": 0.6919,
+          "hd95": 12.21
+        },
+        "DeTTA": {
+          "dice": 0.6838,
+          "hd95": 11.51
+        },
+        "TestFit": {
+          "dice": 0.6614,
+          "hd95": 9.95
+        },
+        "DANN": {
+          "dice": 0.7082,
+          "hd95": 10.99
+        },
+        "SmaRT": {
+          "dice": 0.8405,
+          "hd95": 8.91
+        },
+        "DG-TTA": {
+          "dice": 0.8500,
+          "hd95": 8.61
+        },
+        "SaTTCA": {
+          "dice": 0.6793,
+          "hd95": 12.51
+        },
+        "UPL-SFDA": {
+          "dice": 0.6748,
+          "hd95": 12.73
+        },
+        "TENT": {
+          "dice": 0.6918,
+          "hd95": 23.10
+        },
+        "ProSFDA": {
+          "dice": 0.6937,
+          "hd95": 11.95
+        },
+        "ExploringTTA": {
+          "dice": 0.6933,
+          "hd95": 20.86
+        },
+        "PASS": {
+          "dice": 0.7088,
+          "hd95": 11.52
+        },
+        "VPTTA": {
+          "dice": 0.6792,
+          "hd95": 14.73
+        },
+        "AdaMI": {
+          "dice": 0.7094,
+          "hd95": 10.97
+        }
+      }
+    },
+    "US": {
+      "domainShift": "Strong",
+      "baseline": {
+        "intra": {
+          "dice": 0.7215,
+          "hd95": 31.01
+        },
+        "target": {
+          "dice": 0.4811,
+          "hd95": 62.78
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": 0.5692,
+          "hd95": 42.39
+        },
+        "STDR": {
+          "dice": 0.4949,
+          "hd95": 61.55
+        },
+        "RSA": {
+          "dice": 0.4879,
+          "hd95": 71.24
+        },
+        "SFDA-FSM": {
+          "dice": 0.8333,
+          "hd95": 10.67
+        },
+        "DL-TTA": {
+          "dice": 0.4930,
+          "hd95": 60.47
+        },
+        "GraTa": {
+          "dice": 0.5636,
+          "hd95": 50.62
+        },
+        "UDA-MIMA": {
+          "dice": 0.6359,
+          "hd95": 35.15
+        },
+        "DeTTA": {
+          "dice": 0.5049,
+          "hd95": 59.50
+        },
+        "TestFit": {
+          "dice": 0.5004,
+          "hd95": 58.50
+        },
+        "DANN": {
+          "dice": 0.5646,
+          "hd95": 50.38
+        },
+        "SmaRT": {
+          "dice": 0.7957,
+          "hd95": 16.39
+        },
+        "DG-TTA": {
+          "dice": 0.4805,
+          "hd95": 61.96
+        },
+        "SaTTCA": {
+          "dice": 0.5640,
+          "hd95": 50.45
+        },
+        "UPL-SFDA": {
+          "dice": 0.4950,
+          "hd95": 67.90
+        },
+        "TENT": {
+          "dice": 0.5546,
+          "hd95": 51.80
+        },
+        "ProSFDA": {
+          "dice": 0.5451,
+          "hd95": 52.98
+        },
+        "ExploringTTA": {
+          "dice": 0.5640,
+          "hd95": 50.45
+        },
+        "PASS": {
+          "dice": 0.6533,
+          "hd95": 31.70
+        },
+        "VPTTA": {
+          "dice": 0.5681,
+          "hd95": 46.62
+        },
+        "AdaMI": {
+          "dice": 0.5573,
+          "hd95": 53.01
+        }
+      }
+    },
+    "MRI": {
+      "domainShift": "Strong",
+      "regional": true,
+      "regions": [
+        "ET",
+        "TC",
+        "WT"
+      ],
+      "baseline": {
+        "intra": {
+          "dice": {
+            "ET": 0.6320,
+            "TC": 0.6379,
+            "WT": 0.8480
+          },
+          "hd95": {
+            "ET": 4.40,
+            "TC": 4.40,
+            "WT": 1.20
+          }
+        },
+        "target": {
+          "dice": {
+            "ET": 0.5232,
+            "TC": 0.5105,
+            "WT": 0.7468
+          },
+          "hd95": {
+            "ET": 26.85,
+            "TC": 37.04,
+            "WT": 15.22
+          }
+        }
+      },
+      "methods": {
+        "AIF-SFDA": {
+          "dice": {
+            "ET": 0.6375,
+            "TC": 0.6092,
+            "WT": 0.7342
+          },
+          "hd95": {
+            "ET": 10.30,
+            "TC": 9.27,
+            "WT": 7.34
+          }
+        },
+        "STDR": {
+          "dice": {
+            "ET": 0.5438,
+            "TC": 0.5187,
+            "WT": 0.7052
+          },
+          "hd95": {
+            "ET": 15.17,
+            "TC": 14.88,
+            "WT": 12.29
+          }
+        },
+        "RSA": {
+          "dice": {
+            "ET": 0.5527,
+            "TC": 0.5061,
+            "WT": 0.7593
+          },
+          "hd95": {
+            "ET": 17.65,
+            "TC": 17.67,
+            "WT": 15.80
+          }
+        },
+        "SFDA-FSM": {
+          "dice": {
+            "ET": 0.6118,
+            "TC": 0.5936,
+            "WT": 0.6764
+          },
+          "hd95": {
+            "ET": 18.39,
+            "TC": 16.82,
+            "WT": 12.27
+          }
+        },
+        "DL-TTA": {
+          "dice": {
+            "ET": 0.6441,
+            "TC": 0.6160,
+            "WT": 0.7423
+          },
+          "hd95": {
+            "ET": 14.31,
+            "TC": 14.28,
+            "WT": 9.35
+          }
+        },
+        "GraTa": {
+          "dice": {
+            "ET": 0.5996,
+            "TC": 0.5842,
+            "WT": 0.7379
+          },
+          "hd95": {
+            "ET": 6.84,
+            "TC": 7.29,
+            "WT": 3.96
+          }
+        },
+        "UDA-MIMA": {
+          "dice": {
+            "ET": 0.5609,
+            "TC": 0.5505,
+            "WT": 0.7373
+          },
+          "hd95": {
+            "ET": 16.65,
+            "TC": 15.56,
+            "WT": 7.63
+          }
+        },
+        "DeTTA": {
+          "dice": {
+            "ET": 0.5975,
+            "TC": 0.5742,
+            "WT": 0.7489
+          },
+          "hd95": {
+            "ET": 12.54,
+            "TC": 11.35,
+            "WT": 8.43
+          }
+        },
+        "TestFit": {
+          "dice": {
+            "ET": 0.5669,
+            "TC": 0.5756,
+            "WT": 0.7508
+          },
+          "hd95": {
+            "ET": 16.11,
+            "TC": 6.87,
+            "WT": 2.51
+          }
+        },
+        "DANN": {
+          "dice": {
+            "ET": 0.5394,
+            "TC": 0.5006,
+            "WT": 0.7056
+          },
+          "hd95": {
+            "ET": 12.65,
+            "TC": 12.49,
+            "WT": 14.20
+          }
+        },
+        "SmaRT": {
+          "dice": {
+            "ET": 0.6403,
+            "TC": 0.6002,
+            "WT": 0.7520
+          },
+          "hd95": {
+            "ET": 4.80,
+            "TC": 5.36,
+            "WT": 3.16
+          }
+        },
+        "DG-TTA": {
+          "dice": {
+            "ET": 0.5995,
+            "TC": 0.5839,
+            "WT": 0.7384
+          },
+          "hd95": {
+            "ET": 6.95,
+            "TC": 7.38,
+            "WT": 3.94
+          }
+        },
+        "SaTTCA": {
+          "dice": {
+            "ET": 0.5929,
+            "TC": 0.5717,
+            "WT": 0.7395
+          },
+          "hd95": {
+            "ET": 7.35,
+            "TC": 7.64,
+            "WT": 4.48
+          }
+        },
+        "UPL-SFDA": {
+          "dice": {
+            "ET": 0.5416,
+            "TC": 0.5065,
+            "WT": 0.7398
+          },
+          "hd95": {
+            "ET": 17.30,
+            "TC": 17.15,
+            "WT": 9.58
+          }
+        },
+        "TENT": {
+          "dice": {
+            "ET": 0.6145,
+            "TC": 0.6010,
+            "WT": 0.7291
+          },
+          "hd95": {
+            "ET": 5.49,
+            "TC": 5.77,
+            "WT": 2.79
+          }
+        },
+        "ProSFDA": {
+          "dice": {
+            "ET": 0.5883,
+            "TC": 0.5796,
+            "WT": 0.7412
+          },
+          "hd95": {
+            "ET": 6.78,
+            "TC": 7.05,
+            "WT": 5.35
+          }
+        },
+        "ExploringTTA": {
+          "dice": {
+            "ET": 0.6038,
+            "TC": 0.5805,
+            "WT": 0.7443
+          },
+          "hd95": {
+            "ET": 6.55,
+            "TC": 7.36,
+            "WT": 3.44
+          }
+        },
+        "PASS": {
+          "dice": {
+            "ET": 0.5983,
+            "TC": 0.5736,
+            "WT": 0.7365
+          },
+          "hd95": {
+            "ET": 6.64,
+            "TC": 7.46,
+            "WT": 3.47
+          }
+        },
+        "VPTTA": {
+          "dice": {
+            "ET": 0.5962,
+            "TC": 0.5724,
+            "WT": 0.7475
+          },
+          "hd95": {
+            "ET": 13.54,
+            "TC": 10.35,
+            "WT": 8.43
+          }
+        },
+        "AdaMI": {
+          "dice": {
+            "ET": 0.5906,
+            "TC": 0.5631,
+            "WT": 0.7481
+          },
+          "hd95": {
+            "ET": 6.66,
+            "TC": 7.64,
+            "WT": 3.62
+          }
+        }
+      }
+    }
+  }
+}
