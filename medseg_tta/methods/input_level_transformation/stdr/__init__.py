@@ -1,0 +1,1 @@
+"""STDR method package."""

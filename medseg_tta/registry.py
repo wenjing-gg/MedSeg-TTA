@@ -286,6 +286,28 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "stdr",
+        "name": "STDR",
+        "source_dir": "input_level_transformation/STDR",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
+        "modality": "MRI",
+        "status": "available",
+        "summary": "Sample-selection driven 3D BRATS adaptation workflow with source-feature saving, anchor clustering, active-sample selection, and finetuning entrypoints.",
+        "dimensions": ["three_d"],
+        "entries_by_dimension": {
+            "three_d": [
+                "tta3d.py",
+                "save_source.py",
+                "cluster_anchors.py",
+                "select_active_samples.py",
+            ],
+        },
+        "aliases": {
+            "stdr_3d": "three_d",
+        },
+    },
+    {
         "slug": "upl_sfda",
         "name": "UPL-SFDA",
         "source_dir": "input_level_transformation/UPL-SFDA",
@@ -316,8 +338,8 @@ TABLE_METHODS = [
         "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
-        "original_dimension": "2D",
-        "status": "missing",
+        "original_dimension": "3D",
+        "status": "available",
     },
     {
         "name": "RSA",
