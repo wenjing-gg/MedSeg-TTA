@@ -42,11 +42,11 @@ MedSeg-TTA/
 │   ├── SFDA-FSM/
 │   ├── DLTTA/
 │   ├── STDR/
-│   ├── RSA/
-│   └── UPL-SFDA/
+│   └── RSA/
 ├── output_level_regularization/
 │   ├── DG-TTA/
 │   ├── SaTTCA/
+│   ├── UPL-SFDA/
 │   └── tent/
 ├── prior_estimation/
 │   ├── ExploringTTA/
