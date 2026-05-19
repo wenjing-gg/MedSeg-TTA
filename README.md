@@ -49,6 +49,7 @@ MedSeg-TTA/
 ├── prior_estimation/
 │   ├── ExploringTTA/
 │   ├── AdaMI/
+│   ├── PASS/
 │   └── ProSFDA/
 └── ASSETS.md
 ```
