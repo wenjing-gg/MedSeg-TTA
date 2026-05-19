@@ -219,6 +219,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "pass",
+        "name": "PASS",
+        "source_dir": "prior_estimation/PASS",
+        "paradigm_slug": "prior_estimation",
+        "paradigm": "Prior Estimation",
+        "modality": "OCT/MRI/CT",
+        "status": "available",
+        "summary": "Prior-aware source-free adaptation with bundled 2D, 3D BRATS, and 3D CT legacy entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py"],
+        },
+        "aliases": {
+            "pass_2d": "two_d",
+            "pass_3d": "three_d",
+        },
+    },
+    {
         "slug": "exploring_tta",
         "name": "ExploringTTA",
         "source_dir": "prior_estimation/ExploringTTA",
@@ -426,7 +445,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "VPTTA",
