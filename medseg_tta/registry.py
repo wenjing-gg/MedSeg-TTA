@@ -200,6 +200,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "adami",
+        "name": "AdaMI",
+        "source_dir": "prior_estimation/AdaMI",
+        "paradigm_slug": "prior_estimation",
+        "paradigm": "Prior Estimation",
+        "modality": "MRI/CT",
+        "status": "available",
+        "summary": "Adversarial mutual-information based source-free adaptation with bundled 2D, 3D CT, and 3D BRATS legacy entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py"],
+        },
+        "aliases": {
+            "adami_2d": "two_d",
+            "adami_3d": "three_d",
+        },
+    },
+    {
         "slug": "exploring_tta",
         "name": "ExploringTTA",
         "source_dir": "prior_estimation/ExploringTTA",
@@ -404,7 +423,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
-        "status": "missing",
+        "status": "available",
     },
 ]
 
