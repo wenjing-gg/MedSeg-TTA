@@ -248,6 +248,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "dl_tta",
+        "name": "DL-TTA",
+        "source_dir": "input_level_transformation/DL-TTA",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
+        "modality": "PATH/MRI",
+        "status": "available",
+        "summary": "Memory-guided source-free adaptation with bundled 2D and 3D BRATS legacy entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3d.py"],
+        },
+        "aliases": {
+            "dltta_2d": "two_d",
+            "dltta_3d": "three_d",
+        },
+    },
+    {
         "slug": "upl_sfda",
         "name": "UPL-SFDA",
         "source_dir": "input_level_transformation/UPL-SFDA",
@@ -303,7 +322,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "PATH",
         "original_dimension": "2D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "GraTa",
