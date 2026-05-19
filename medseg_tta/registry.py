@@ -327,9 +327,9 @@ _METHOD_DATA = [
     {
         "slug": "upl_sfda",
         "name": "UPL-SFDA",
-        "source_dir": "input_level_transformation/UPL-SFDA",
-        "paradigm_slug": "input_level_transformation",
-        "paradigm": "Input-level Transformation",
+        "source_dir": "output_level_regularization/UPL-SFDA",
+        "paradigm_slug": "output_level_regularization",
+        "paradigm": "Output-level Regularization",
         "modality": "CMR/MRI",
         "status": "available",
         "summary": "Uncertainty-aware pseudo-label guided source-free adaptation with bundled 2D and 3D legacy MRI segmentation entrypoints.",
@@ -448,8 +448,8 @@ TABLE_METHODS = [
     },
     {
         "name": "UPL-SFDA",
-        "paradigm_slug": "input_level_transformation",
-        "paradigm": "Input-level Transformation",
+        "paradigm_slug": "output_level_regularization",
+        "paradigm": "Output-level Regularization",
         "original_modality": "CMR/MRI",
         "original_dimension": "General",
         "status": "available",
