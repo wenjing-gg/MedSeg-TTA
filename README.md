@@ -1,4 +1,4 @@
-﻿# A Large Scale Benchmark for Test Time Adaptation in Medical Image Segmentation
+# A Large Scale Benchmark for Test Time Adaptation in Medical Image Segmentation
 
 [![GitHub](https://img.shields.io/badge/GitHub-MedSeg--TTA-181717?logo=github)](https://github.com/wenjing-gg/MedSeg-TTA)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Live-orange)](https://wenjing-gg.github.io/MedSeg-TTA/)
@@ -14,7 +14,7 @@ MedSeg-TTA is a benchmark for test-time adaptation in medical image segmentation
 </h1>
 
 <p align="center">
-  <a href="https://wenjing-gg.github.io/MedSeg-TTA/">馃憠 Click here to explore the full leaderboard in detail.</a>
+  <a href="https://wenjing-gg.github.io/MedSeg-TTA/">👉 Click here to explore the full leaderboard in detail.</a>
 </p>
 
 ## Benchmark Overview
@@ -33,23 +33,24 @@ MedSeg-TTA covers seven modalities and multiple cross-domain source-target pairs
 
 ```text
 MedSeg-TTA/
-鈹溾攢鈹€ medseg_tta/
-鈹溾攢鈹€ site/
-鈹溾攢鈹€ feature_level_alignment/
-鈹?  鈹溾攢鈹€ GraTa/
-鈹?  鈹斺攢鈹€ Testfit/
-鈹溾攢鈹€ input_level_transformation/
-鈹?  鈹溾攢鈹€ SFDA-FSM/
-鈹?  鈹斺攢鈹€ UPL-SFDA/
-鈹溾攢鈹€ output_level_regularization/
-鈹?  鈹溾攢鈹€ DG-TTA/
-鈹?  鈹溾攢鈹€ SaTTCA/
-鈹?  鈹斺攢鈹€ tent/
-鈹溾攢鈹€ prior_estimation/
-鈹?  鈹溾攢鈹€ ExploringTTA/
-鈹?  鈹溾攢鈹€ AdaMI/
-鈹?  鈹斺攢鈹€ ProSFDA/
-鈹斺攢鈹€ ASSETS.md
+├── medseg_tta/
+├── site/
+├── feature_level_alignment/
+│   ├── GraTa/
+│   └── Testfit/
+├── input_level_transformation/
+│   ├── SFDA-FSM/
+│   ├── DLTTA/
+│   └── UPL-SFDA/
+├── output_level_regularization/
+│   ├── DG-TTA/
+│   ├── SaTTCA/
+│   └── tent/
+├── prior_estimation/
+│   ├── ExploringTTA/
+│   ├── AdaMI/
+│   └── ProSFDA/
+└── ASSETS.md
 ```
 
 ## Assets and Licensing
