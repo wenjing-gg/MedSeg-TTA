@@ -308,6 +308,23 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "rsa",
+        "name": "RSA",
+        "source_dir": "input_level_transformation/RSA",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
+        "modality": "MRI",
+        "status": "available",
+        "summary": "Reliable source approximation workflow with translation, reliability-based sample selection, and segmentation finetuning stages.",
+        "dimensions": ["three_d"],
+        "entries_by_dimension": {
+            "three_d": ["translate.py", "select.py", "tta3d.py"],
+        },
+        "aliases": {
+            "rsa_3d": "three_d",
+        },
+    },
+    {
         "slug": "upl_sfda",
         "name": "UPL-SFDA",
         "source_dir": "input_level_transformation/UPL-SFDA",
@@ -346,8 +363,8 @@ TABLE_METHODS = [
         "paradigm_slug": "input_level_transformation",
         "paradigm": "Input-level Transformation",
         "original_modality": "MRI",
-        "original_dimension": "2D",
-        "status": "skipped",
+        "original_dimension": "3D",
+        "status": "available",
     },
     {
         "name": "SFDA-FSM",
