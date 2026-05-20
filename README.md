@@ -1,4 +1,4 @@
-# A Large Scale Benchmark for Test Time Adaptation in Medical Image Segmentation
+# A Large-Scale Benchmark for Source-Free Test-Time Adaptation in Medical Image Segmentation
 
 [![GitHub](https://img.shields.io/badge/GitHub-MedSeg--TTA-181717?logo=github)](https://github.com/wenjing-gg/MedSeg-TTA)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Live-orange)](https://wenjing-gg.github.io/MedSeg-TTA/)
