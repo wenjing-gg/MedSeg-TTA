@@ -65,9 +65,10 @@ Dataset provenance, third-party code sources, redistribution notes, and license 
 If you find this project useful, please cite:
 
 ```bibtex
-@article{MedSeg-TTA,
-  title   = {MedSeg-TTA: Benchmarking Test-time Adaptation Methods for Domain Shift in Medical Image Segmentation},
-  journal = {arXiv preprint arXiv:xxxx.xxxxx},
+@article{anonymous2025medsegtta,
+  title   = {A Large Scale Benchmark for Test Time Adaptation Methods in Medical Image Segmentation},
+  author  = {Anonymous Authors},
+  journal = {Anonymous preprint},
   year    = {2025}
 }
 ```
