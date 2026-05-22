@@ -162,6 +162,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "uda_mima",
+        "name": "UDA-MIMA",
+        "source_dir": "feature_level_alignment/UDA-MIMA",
+        "paradigm_slug": "feature_level_alignment",
+        "paradigm": "Feature-level Alignment",
+        "modality": "OCT/CT",
+        "status": "available",
+        "summary": "Feature-level adaptation with mutual-information maximization for bundled 2D OCT and 3D CT legacy entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3dCT.py"],
+        },
+        "aliases": {
+            "uda_mima_2d": "two_d",
+            "uda_mima_3d": "three_d",
+        },
+    },
+    {
         "slug": "testfit",
         "name": "TestFit",
         "source_dir": "feature_level_alignment/Testfit",
@@ -415,7 +434,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI/CT",
         "original_dimension": "3D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "DeTTA",
