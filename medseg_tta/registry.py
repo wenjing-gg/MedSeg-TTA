@@ -143,6 +143,25 @@ _METHOD_DATA = [
         "aliases": {"grata_3d": "three_d"},
     },
     {
+        "slug": "dann",
+        "name": "DANN",
+        "source_dir": "feature_level_alignment/DANN",
+        "paradigm_slug": "feature_level_alignment",
+        "paradigm": "Feature-level Alignment",
+        "modality": "US/CT",
+        "status": "available",
+        "summary": "Domain-adversarial source-free adaptation with bundled 2D ultrasound and 3D CT legacy entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3dCT.py"],
+        },
+        "aliases": {
+            "dann_2d": "two_d",
+            "dann_3d": "three_d",
+        },
+    },
+    {
         "slug": "testfit",
         "name": "TestFit",
         "source_dir": "feature_level_alignment/Testfit",
@@ -420,7 +439,7 @@ TABLE_METHODS = [
         "paradigm": "Feature-level Alignment",
         "original_modality": "MRI",
         "original_dimension": "3D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "SmaRT",
