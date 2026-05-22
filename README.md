@@ -38,6 +38,7 @@ MedSeg-TTA/
 ├── feature_level_alignment/
 │   ├── GraTa/
 │   ├── DANN/
+│   ├── UDA-MIMA/
 │   └── Testfit/
 ├── input_level_transformation/
 │   ├── SFDA-FSM/
