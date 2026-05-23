@@ -363,6 +363,23 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "aif_sfda",
+        "name": "AIF-SFDA",
+        "source_dir": "input_level_transformation/AIF-SFDA",
+        "paradigm_slug": "input_level_transformation",
+        "paradigm": "Input-level Transformation",
+        "modality": "Fundus/US",
+        "status": "available",
+        "summary": "Autonomous information-filter source-free adaptation framework with compact 2D pretrain, train, validation, and test entrypoints.",
+        "dimensions": ["two_d"],
+        "entries_by_dimension": {
+            "two_d": ["pretrain2d.py", "tta2d.py", "validation2d.py", "test2d.py"],
+        },
+        "aliases": {
+            "aif_sfda_2d": "two_d",
+        },
+    },
+    {
         "slug": "upl_sfda",
         "name": "UPL-SFDA",
         "source_dir": "output_level_regularization/UPL-SFDA",
@@ -386,7 +403,7 @@ TABLE_METHODS = [
         "paradigm": "Input-level Transformation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "STDR",
