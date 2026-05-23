@@ -43,6 +43,7 @@ MedSeg-TTA/
 ├── input_level_transformation/
 │   ├── SFDA-FSM/
 │   ├── DLTTA/
+│   ├── AIF-SFDA/
 │   ├── STDR/
 │   └── RSA/
 ├── output_level_regularization/
