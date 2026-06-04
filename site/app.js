@@ -270,7 +270,6 @@
   function renderSpotlights(stateRef) {
     const { data } = stateRef;
     const summaryRows = [...data.methodSummary].sort((left, right) => right.meanDice - left.meanDice);
-    const localRows = summaryRows.filter((row) => data.methods[row.method].local);
     const winners = computeShiftWinners(data);
     const sourceList = data.meta.sources
       .map((source) => `<li class="compact-list__item">${escapeHtml(source)}</li>`)
@@ -282,16 +281,6 @@
         <h3 class="spotlight-panel__title">Top methods by mean Dice</h3>
         <ol class="podium-list">
           ${summaryRows
-            .slice(0, 3)
-            .map((row, index) => renderPodiumRow(row, index + 1, data.meta.repositoryUrl))
-            .join("")}
-        </ol>
-      </article>
-      <article class="spotlight-panel">
-        <p class="spotlight-panel__kicker">Code-ready slice</p>
-        <h3 class="spotlight-panel__title">Best local implementations</h3>
-        <ol class="podium-list">
-          ${localRows
             .slice(0, 3)
             .map((row, index) => renderPodiumRow(row, index + 1, data.meta.repositoryUrl))
             .join("")}
