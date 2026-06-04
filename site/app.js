@@ -14,7 +14,7 @@
     "prior_estimation"
   ];
   const modalityOrder = ["OCT", "PATH", "DER", "CXR", "MRI", "CT", "US"];
-  const viewIds = new Set(["overview", "summary", "modalities"]);
+  const viewIds = new Set(["overview", "modalities"]);
   const modalityMetricLabels = {
     dice: "Dice ↑",
     hd95: "HD95 ↓",
@@ -255,7 +255,6 @@
 
   function renderAll(stateRef) {
     renderOverview(stateRef);
-    renderSummary(stateRef);
     renderModalityExplorer(stateRef);
   }
 
@@ -340,68 +339,6 @@
           </table>
         </div>
       </div>
-    `;
-  }
-
-  function renderSummary(stateRef) {
-    const { data } = stateRef;
-    const container = document.getElementById("summary");
-    const sections = paradigmOrder
-      .map((paradigmKey) => {
-        const paradigm = data.paradigms[paradigmKey];
-        const rows = data.methodSummary
-          .filter((row) => data.methods[row.method].paradigm === paradigmKey)
-          .sort((left, right) => right.meanDice - left.meanDice);
-        const diceRanks = rankMap(rows, "meanDice", true);
-        const hd95Ranks = rankMap(rows, "meanHd95", false);
-
-        return `
-          <div class="table-block">
-            <h3 class="table-block__title">${paradigm.symbol} ${paradigm.label}</h3>
-            <div class="table-shell">
-              <table class="paper-table">
-                <thead>
-                  <tr>
-                    <th>Method</th>
-                    <th>Paradigm</th>
-                    <th>Mean Dice ↑</th>
-                    <th>Mean HD95 ↓</th>
-                    <th>Availability</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rows
-                    .map((row) => {
-                      const metadata = data.methods[row.method];
-                      return `
-                        <tr>
-                          <td>${methodLabel(row.method, metadata)}</td>
-                          <td>${paradigm.symbol} ${paradigm.label}</td>
-                          <td class="metric-cell mono ${rankClass(diceRanks[row.method])}">${formatMetric(row.meanDice, "dice")}</td>
-                          <td class="metric-cell mono ${rankClass(hd95Ranks[row.method])}">${formatMetric(row.meanHd95, "hd95")}</td>
-                          <td>${availabilityCell(metadata, data.meta.repositoryUrl)}</td>
-                        </tr>
-                      `;
-                    })
-                    .join("")}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      })
-      .join("");
-
-    container.innerHTML = `
-      <div class="section-head">
-        <div>
-          <h2 class="section-title">Method summary across all seven modalities</h2>
-          <p class="section-text">
-            Rows are grouped by paradigm and sorted by mean Dice. Local methods expose root, 2D, and 3D GitHub jumps where available.
-          </p>
-        </div>
-      </div>
-      <div class="summary-grid">${sections}</div>
     `;
   }
 

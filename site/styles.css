@@ -443,7 +443,6 @@ a {
 }
 
 .overview-grid,
-.summary-grid,
 .local-grid {
   display: grid;
   gap: 28px;
