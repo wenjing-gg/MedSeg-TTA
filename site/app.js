@@ -1,7 +1,7 @@
 (async function bootstrap() {
   const state = {
     data: null,
-    view: "overview",
+    view: "modalities",
     modality: "OCT",
     sortBy: "dice",
     region: "WT"
@@ -270,7 +270,6 @@
     renderOverview(stateRef);
     renderSummary(stateRef);
     renderModalityExplorer(stateRef);
-    renderLocalCodeSection(stateRef);
   }
 
   function renderSpotlights(stateRef) {
