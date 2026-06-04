@@ -786,7 +786,6 @@
                         </div>
                       </div>
                       <div class="method-label__links">
-                        ${metadata.local ? `<span class="inline-pill inline-pill--local">Local code</span>` : `<span class="inline-pill">Benchmark only</span>`}
                         ${buildRoutePills(metadata, data.meta.repositoryUrl, { includeRoot: true, className: "inline-pill" })}
                       </div>
                     </article>
