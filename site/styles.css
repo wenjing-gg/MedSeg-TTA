@@ -798,14 +798,6 @@ a {
   font-size: 13px;
 }
 
-.local-method__path {
-  margin: 14px 0 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(151, 166, 181, 0.28);
-  color: var(--muted);
-  font-size: 13px;
-}
-
 .provenance {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);

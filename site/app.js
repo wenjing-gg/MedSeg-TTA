@@ -16,17 +16,38 @@
   const modalityOrder = ["OCT", "PATH", "DER", "CXR", "MRI", "CT", "US"];
   const viewIds = new Set(["overview", "summary", "modalities"]);
   const localMethodRoutes = {
+    "AIF-SFDA": {
+      two_d: "input_level_transformation/AIF-SFDA/two_d"
+    },
+    STDR: {
+      three_d: "input_level_transformation/STDR/three_d"
+    },
+    RSA: {
+      three_d: "input_level_transformation/RSA/three_d"
+    },
     "SFDA-FSM": {
       two_d: "input_level_transformation/SFDA-FSM/two_d",
       three_d: "input_level_transformation/SFDA-FSM/three_d"
     },
+    "DL-TTA": {
+      two_d: "input_level_transformation/DL-TTA/two_d",
+      three_d: "input_level_transformation/DL-TTA/three_d"
+    },
     "UPL-SFDA": {
-      two_d: "input_level_transformation/UPL-SFDA/two_d",
-      three_d: "input_level_transformation/UPL-SFDA/three_d"
+      two_d: "output_level_regularization/UPL-SFDA/two_d",
+      three_d: "output_level_regularization/UPL-SFDA/three_d"
     },
     GraTa: {
       two_d: "feature_level_alignment/GraTa/two_d",
       three_d: "feature_level_alignment/GraTa/three_d"
+    },
+    "UDA-MIMA": {
+      two_d: "feature_level_alignment/UDA-MIMA/two_d",
+      three_d: "feature_level_alignment/UDA-MIMA/three_d"
+    },
+    DANN: {
+      two_d: "feature_level_alignment/DANN/two_d",
+      three_d: "feature_level_alignment/DANN/three_d"
     },
     TestFit: {
       two_d: "feature_level_alignment/Testfit/two_d",
@@ -50,6 +71,14 @@
     },
     ExploringTTA: {
       three_d: "prior_estimation/ExploringTTA/three_d"
+    },
+    PASS: {
+      two_d: "prior_estimation/PASS/two_d",
+      three_d: "prior_estimation/PASS/three_d"
+    },
+    AdaMI: {
+      two_d: "prior_estimation/AdaMI/two_d",
+      three_d: "prior_estimation/AdaMI/three_d"
     }
   };
   const modalityProfiles = {
@@ -132,6 +161,8 @@
       }
       data.methods[methodName].routes = routes;
       data.methods[methodName].dimensions = Object.keys(routes);
+      data.methods[methodName].local = true;
+      data.methods[methodName].codePath = getRootPath(routes);
     });
   }
 
@@ -499,7 +530,7 @@
           <p class="section-kicker">Table 4 re-framed</p>
           <h2 class="section-title">Method summary across all seven modalities</h2>
           <p class="section-text">
-            Within each paradigm, rows stay sorted by mean Dice. Top-three metric cells keep the paper's emphasis, while local methods expose direct root, 2D, and 3D jumps wherever that code is available in this repository.
+            Rows are grouped by paradigm and sorted by mean Dice. Local methods expose root, 2D, and 3D GitHub jumps where available.
           </p>
         </div>
       </div>
@@ -707,7 +738,7 @@
         </table>
       </div>
       <p class="table-footnote">
-        Rows turn gray when Dice falls below the target-domain baseline for the active modality view. MRI uses the selected region (${modality.regional ? stateRef.region : "not applicable"}) so the ranking stays aligned with the paper's regional evaluation protocol.
+        Gray rows fall below the target-domain baseline. MRI follows the selected region (${modality.regional ? stateRef.region : "not applicable"}).
       </p>
     `;
   }
@@ -721,8 +752,9 @@
       .map((paradigmKey) => {
         const paradigm = data.paradigms[paradigmKey];
         const methods = Object.entries(data.methods)
-          .filter(([, metadata]) => metadata.paradigm === paradigmKey && metadata.local)
+          .filter(([, metadata]) => metadata.paradigm === paradigmKey)
           .sort((left, right) => summaryByMethod[right[0]].meanDice - summaryByMethod[left[0]].meanDice);
+        const localCount = methods.filter(([, metadata]) => metadata.local).length;
 
         if (methods.length === 0) {
           return "";
@@ -735,7 +767,7 @@
                 <p class="section-kicker">${paradigm.symbol} ${paradigm.shortLabel}</p>
                 <h3 class="local-group__title">${paradigm.label}</h3>
               </div>
-              <p class="local-group__meta">${methods.length} local method${methods.length > 1 ? "s" : ""}</p>
+              <p class="local-group__meta">${methods.length} methods, ${localCount} with code</p>
             </div>
             <div class="local-group__methods">
               ${methods
@@ -753,9 +785,8 @@
                           <span>HD95 ${formatMetric(summary.meanHd95, "hd95")}</span>
                         </div>
                       </div>
-                      <p class="local-method__path mono">${escapeHtml(metadata.codePath)}/</p>
                       <div class="method-label__links">
-                        <span class="inline-pill inline-pill--local">Local code</span>
+                        ${metadata.local ? `<span class="inline-pill inline-pill--local">Local code</span>` : `<span class="inline-pill">Benchmark only</span>`}
                         ${buildRoutePills(metadata, data.meta.repositoryUrl, { includeRoot: true, className: "inline-pill" })}
                       </div>
                     </article>
@@ -806,6 +837,14 @@
         `
       )
       .join("");
+  }
+
+  function getRootPath(routes) {
+    const routeValues = Object.values(routes);
+    if (routeValues.length === 0) {
+      return "";
+    }
+    return routeValues[0].replace(/\/(?:two_d|three_d)$/, "");
   }
 
   function availabilityCell(metadata, repositoryUrl) {

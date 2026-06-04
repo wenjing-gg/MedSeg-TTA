@@ -1,9 +1,9 @@
 {
   "meta": {
     "title": "MedSeg-TTA Leaderboard",
-    "subtitle": "A paper-inspired MVP leaderboard for paradigm, method, and modality-level test-time adaptation benchmarking across seven medical imaging modalities, with direct GitHub jumps for local implementations.",
+    "subtitle": "A benchmark surface for paradigm, method, and modality-level medical TTA results across seven imaging modalities.",
     "updated": "2026-05-06",
-    "mvpScope": "This MVP surfaces the primary benchmark metrics Dice and HD95, and keeps local-method links pointed at the canonical paradigm/method folders. Secondary metrics such as JI, Sensitivity, and PPV can be layered in later without changing the layout.",
+    "mvpScope": "Primary metrics: Dice and HD95. Local-code methods link to their repository folders.",
     "repositoryUrl": "https://github.com/wenjing-gg/MedSeg-TTA",
     "pagesUrl": "https://wenjing-gg.github.io/MedSeg-TTA/",
     "sources": [
@@ -123,11 +123,11 @@
       "codePath": "output_level_regularization/SaTTCA"
     },
     "UPL-SFDA": {
-      "paradigm": "input_level_transformation",
+      "paradigm": "output_level_regularization",
       "venue": "2023 TMI",
       "ref": "[49]",
       "local": true,
-      "codePath": "input_level_transformation/UPL-SFDA"
+      "codePath": "output_level_regularization/UPL-SFDA"
     },
     "TENT": {
       "paradigm": "output_level_regularization",
