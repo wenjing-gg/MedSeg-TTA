@@ -465,14 +465,14 @@ a {
 
 .dataset-card {
   display: grid;
-  gap: 8px;
-  min-height: 148px;
-  padding: 14px;
+  place-items: center;
+  min-height: 68px;
+  padding: 14px 10px;
   border: 1px solid rgba(151, 166, 181, 0.45);
   border-radius: 8px;
   background: var(--surface);
   color: var(--ink);
-  text-align: left;
+  text-align: center;
   box-shadow: var(--shadow);
   cursor: pointer;
 }
@@ -483,36 +483,10 @@ a {
   background: rgba(255, 255, 255, 0.96);
 }
 
-.dataset-card__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
 .dataset-card__modality {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-}
-
-.dataset-card__shift,
-.dataset-card__metrics {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.dataset-card__task,
-.dataset-card__pair {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.dataset-card__task {
-  color: var(--ink);
-  font-weight: 800;
 }
 
 .dataset-detail {

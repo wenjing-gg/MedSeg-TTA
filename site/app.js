@@ -467,18 +467,9 @@
 
     datasetSelector.innerHTML = modalityKeys
       .map((key) => {
-        const modality = data.modalityLeaderboards[key];
-        const profile = modalityProfiles[key] || {};
-        const metricKeys = ["dice", "hd95", "ji", "sen", "ppv"].filter((metric) => metricExistsForModality(modality, metric));
         return `
           <button type="button" class="dataset-card ${stateRef.modality === key ? "is-active" : ""}" data-modality="${key}" aria-pressed="${stateRef.modality === key ? "true" : "false"}">
-            <span class="dataset-card__head">
-              <span class="dataset-card__modality">${key}</span>
-              <span class="dataset-card__shift">${modality.domainShift}</span>
-            </span>
-            <span class="dataset-card__task">${escapeHtml(profile.task || "Segmentation task")}</span>
-            <span class="dataset-card__pair">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")}</span>
-            <span class="dataset-card__metrics">${metricKeys.map((metric) => modalityMetricLabels[metric].replace(/[↑↓]/g, "").trim()).join(" · ")}</span>
+            <span class="dataset-card__modality">${key}</span>
           </button>
         `;
       })
