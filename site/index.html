@@ -50,9 +50,9 @@
 
       <section class="summary band">
         <div class="summary__copy">
-          <h2 class="section-title">Summary</h2>
+          <h2 class="section-title">Abstract</h2>
           <p class="section-text">
-            MedSeg-TTA evaluates source-free test-time adaptation for medical image segmentation across seven imaging modalities, four adaptation paradigms, and 20 representative methods. The benchmark links overall rankings, modality-specific behavior, and available implementation folders so performance comparisons stay close to the runnable code.
+            Test-time adaptation (TTA) offers a practical route for deploying medical image segmentation models under domain shift, but current evidence remains fragmented across modalities, tasks and frameworks. We present MedSeg-TTA, a standardized benchmark suite for source-free test-time adaptation in medical image segmentation. It evaluates 20 representative test-time adaptation methods across seven medical imaging modalities with unified preprocessing, backbone initialization and source-free test-time frameworks. The benchmark covers input-level transformation, feature-level alignment, output-level regularization and prior estimation, making it possible to compare where each paradigm succeeds or fails under controlled conditions. Across magnetic resonance imaging, computed tomography, ultrasound, histopathology, dermoscopy, retinal fundus photography and chest X-ray, no paradigm dominates all target domains. Input-level methods give the most consistent Dice gains under appearance shifts, whereas feature-level and output-level methods are often more competitive for boundary-sensitive metrics. Prior-based methods help when anatomy is stable but degrade when priors mismatch the target domain.
           </p>
         </div>
       </section>
