@@ -15,6 +15,13 @@
   ];
   const modalityOrder = ["OCT", "PATH", "DER", "CXR", "MRI", "CT", "US"];
   const viewIds = new Set(["overview", "summary", "modalities"]);
+  const modalityMetricLabels = {
+    dice: "Dice ↑",
+    hd95: "HD95 ↓",
+    ji: "JI ↑",
+    sen: "Sen ↑",
+    ppv: "PPV ↑"
+  };
   const localMethodRoutes = {
     "AIF-SFDA": {
       two_d: "input_level_transformation/AIF-SFDA/two_d"
@@ -515,58 +522,86 @@
 
   function getMetricValue(metrics, metric, modality, region) {
     const value = metrics[metric];
+    if (value === undefined) {
+      return undefined;
+    }
     return modality.regional ? value[region] : value;
   }
 
-  function getDatasetLeader(modality, sortBy, region) {
-    return Object.entries(modality.methods)
-      .map(([method, metrics]) => ({
-        method,
-        dice: getMetricValue(metrics, "dice", modality, region),
-        hd95: getMetricValue(metrics, "hd95", modality, region)
-      }))
-      .sort((left, right) => (sortBy === "dice" ? right.dice - left.dice : left.hd95 - right.hd95))[0];
+  function getMetricStd(metrics, metric, modality, region) {
+    const std = metrics.std && metrics.std[metric];
+    if (std === undefined) {
+      return undefined;
+    }
+    return modality.regional ? std[region] : std;
+  }
+
+  function metricExistsForModality(modality, metric, region) {
+    if (modality.regional && !region) {
+      return modality.regions.some((regionKey) => metricExistsForModality(modality, metric, regionKey));
+    }
+    if (getMetricValue(modality.baseline.intra, metric, modality, region) !== undefined) {
+      return true;
+    }
+    return Object.values(modality.methods).some((metrics) => getMetricValue(metrics, metric, modality, region) !== undefined);
+  }
+
+  function metricCell(metrics, metric, modality, region, className = "") {
+    const value = getMetricValue(metrics, metric, modality, region);
+    if (value === undefined) {
+      return `<td class="metric-cell mono ${className}">—</td>`;
+    }
+    const std = getMetricStd(metrics, metric, modality, region);
+    const formatted = formatMetric(value, metric);
+    const text = std === undefined ? formatted : `${formatted}<span class="metric-std">±${formatMetric(std, metric)}</span>`;
+    return `<td class="metric-cell mono ${className}">${text}</td>`;
+  }
+
+  function getRegionalAverage(metrics, metric, modality) {
+    if (!modality.regional) {
+      return getMetricValue(metrics, metric, modality, "WT");
+    }
+    const values = modality.regions
+      .map((region) => getMetricValue(metrics, metric, modality, region))
+      .filter((value) => value !== undefined);
+    if (!values.length) {
+      return undefined;
+    }
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
+  }
+
+  function getSortValue(metrics, metric, modality) {
+    return modality.regional ? getRegionalAverage(metrics, metric, modality) : getMetricValue(metrics, metric, modality, "WT");
   }
 
   function renderModalityExplorer(stateRef) {
     const { data } = stateRef;
     const modalityKeys = modalityOrder.filter((key) => data.modalityLeaderboards[key]);
-    const datasetGrid = document.getElementById("dataset-grid");
+    const datasetSelector = document.getElementById("dataset-selector");
     const sortTabs = document.getElementById("sort-tabs");
-    const regionTabs = document.getElementById("region-tabs");
 
-    datasetGrid.innerHTML = modalityKeys
-      .map(
-        (key) => {
-          const modality = data.modalityLeaderboards[key];
-          const profile = modalityProfiles[key] || {};
-          const region = modality.regional ? stateRef.region : "WT";
-          const leader = getDatasetLeader(modality, stateRef.sortBy, region);
-          const leaderMeta = data.methods[leader.method];
-          const paradigm = data.paradigms[leaderMeta.paradigm];
-          return `
+    datasetSelector.innerHTML = modalityKeys
+      .map((key) => {
+        const modality = data.modalityLeaderboards[key];
+        const profile = modalityProfiles[key] || {};
+        const metricKeys = ["dice", "hd95", "ji", "sen", "ppv"].filter((metric) => metricExistsForModality(modality, metric));
+        return `
           <button type="button" class="dataset-card ${stateRef.modality === key ? "is-active" : ""}" data-modality="${key}" aria-pressed="${stateRef.modality === key ? "true" : "false"}">
             <span class="dataset-card__head">
               <span class="dataset-card__modality">${key}</span>
-              <span class="dataset-card__shift">${modality.domainShift} shift</span>
+              <span class="dataset-card__shift">${modality.domainShift}</span>
             </span>
             <span class="dataset-card__task">${escapeHtml(profile.task || "Segmentation task")}</span>
             <span class="dataset-card__pair">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")}</span>
-            <span class="dataset-card__metrics">
-              <span>${paradigm.symbol} ${escapeHtml(leader.method)}</span>
-              <span class="mono">Dice ${formatMetric(leader.dice, "dice")} · HD95 ${formatMetric(leader.hd95, "hd95")}</span>
-            </span>
+            <span class="dataset-card__metrics">${metricKeys.map((metric) => modalityMetricLabels[metric].replace(/[↑↓]/g, "").trim()).join(" · ")}</span>
           </button>
         `;
-        }
-      )
+      })
       .join("");
-    datasetGrid.querySelectorAll("[data-modality]").forEach((button) => {
+
+    datasetSelector.querySelectorAll("[data-modality]").forEach((button) => {
       button.addEventListener("click", () => {
         stateRef.modality = button.dataset.modality;
-        if (stateRef.modality !== "MRI") {
-          stateRef.region = "WT";
-        }
         renderModalityExplorer(stateRef);
       });
     });
@@ -582,29 +617,6 @@
       });
     });
 
-    const modality = data.modalityLeaderboards[stateRef.modality];
-    if (modality.regional) {
-      regionTabs.innerHTML = modality.regions
-        .map(
-          (region) => `
-            <button type="button" class="segmented__button ${stateRef.region === region ? "is-active" : ""}" data-region="${region}">
-              ${region}
-            </button>
-          `
-        )
-        .join("");
-      regionTabs.parentElement.style.display = "";
-      regionTabs.querySelectorAll("[data-region]").forEach((button) => {
-        button.addEventListener("click", () => {
-          stateRef.region = button.dataset.region;
-          renderModalityExplorer(stateRef);
-        });
-      });
-    } else {
-      regionTabs.innerHTML = "";
-      regionTabs.parentElement.style.display = "none";
-    }
-
     const container = document.getElementById("modalities");
     if (!container.querySelector(".section-head")) {
       container.insertAdjacentHTML(
@@ -613,147 +625,223 @@
           <div class="section-head">
             <div>
               <h2 class="section-title">Dataset drilldown</h2>
-              <p class="section-text">
-                Select a dataset card to inspect all 20 methods from Tables 7-14. Each table keeps the source baseline, target-domain baseline, paradigm label, Dice, HD95, and code links where available.
-              </p>
             </div>
           </div>
         `
       );
     }
 
-    renderModalityContext(stateRef, modality);
-    renderModalityTable(stateRef, modality);
+    const selectedKey = data.modalityLeaderboards[stateRef.modality] ? stateRef.modality : modalityKeys[0];
+    stateRef.modality = selectedKey;
+    document.getElementById("dataset-detail").innerHTML = renderDatasetSection(stateRef, selectedKey, data.modalityLeaderboards[selectedKey]);
   }
 
-  function renderModalityContext(stateRef, modality) {
-    const profile = modalityProfiles[stateRef.modality] || {};
-    const context = document.getElementById("modality-context");
-    const baselineDice = modality.regional
-      ? modality.baseline.target.dice[stateRef.region]
-      : modality.baseline.target.dice;
-    const baselineHd95 = modality.regional
-      ? modality.baseline.target.hd95[stateRef.region]
-      : modality.baseline.target.hd95;
-
-    const chips = [
-      { label: "Modality", value: stateRef.modality },
-      { label: "Task", value: profile.task || "—" },
-      { label: "Dataset pair", value: profile.source && profile.target ? `${profile.source} -> ${profile.target}` : "—", wide: true },
-      { label: "Runtime", value: profile.dimension || "Mixed" },
-      { label: "Domain shift", value: modality.domainShift }
-    ];
+  function renderDatasetSection(stateRef, modalityKey, modality) {
     if (modality.regional) {
-      chips.push({ label: "MRI region", value: stateRef.region });
+      return renderRegionalDatasetSection(stateRef, modalityKey, modality);
     }
-    chips.push(
-      { label: "Target Dice", value: formatMetric(baselineDice, "dice") },
-      { label: "Target HD95", value: formatMetric(baselineHd95, "hd95") }
-    );
-
-    context.innerHTML = chips
-      .map(
-        (chip) => `
-          <div class="context-chip ${chip.wide ? "context-chip--wide" : ""}">
-            <span class="context-chip__label">${chip.label}</span>
-            <span class="context-chip__value ${chip.value.includes("->") ? "" : "mono"}">${chip.value}</span>
-          </div>
-        `
-      )
-      .join("");
-  }
-
-  function renderModalityTable(stateRef, modality) {
     const data = stateRef.data;
-    const rows = Object.entries(modality.methods).map(([method, metrics]) => ({
-      method,
-      metrics
-    }));
-
-    const getDice = (entry) => (modality.regional ? entry.metrics.dice[stateRef.region] : entry.metrics.dice);
-    const getHd95 = (entry) => (modality.regional ? entry.metrics.hd95[stateRef.region] : entry.metrics.hd95);
+    const profile = modalityProfiles[modalityKey] || {};
+    const region = "WT";
+    const rows = Object.entries(modality.methods).map(([method, metrics]) => ({ method, metrics }));
     rows.sort((left, right) => {
-      if (stateRef.sortBy === "dice") {
-        return getDice(right) - getDice(left);
+      const leftValue = getSortValue(left.metrics, stateRef.sortBy, modality);
+      const rightValue = getSortValue(right.metrics, stateRef.sortBy, modality);
+      if (leftValue === undefined || rightValue === undefined) {
+        return left.method.localeCompare(right.method);
       }
-      return getHd95(left) - getHd95(right);
+      return stateRef.sortBy === "dice" ? rightValue - leftValue : leftValue - rightValue;
     });
 
-    const diceRanks = rankMap(
-      rows.map((row) => ({ method: row.method, value: getDice(row) })),
-      "value",
-      true
+    const metricKeys = ["dice", "hd95", "ji", "sen", "ppv"].filter((metric) => metricExistsForModality(modality, metric, region));
+    const rankMaps = Object.fromEntries(
+      metricKeys.map((metric) => [
+        metric,
+        rankMap(
+          rows
+            .map((row) => ({ method: row.method, value: getMetricValue(row.metrics, metric, modality, region) }))
+            .filter((row) => row.value !== undefined),
+          "value",
+          metric !== "hd95"
+        )
+      ])
     );
-    const hd95Ranks = rankMap(
-      rows.map((row) => ({ method: row.method, value: getHd95(row) })),
-      "value",
-      false
-    );
+    const targetDice = getMetricValue(modality.baseline.target, "dice", modality, region);
+    const contextChips = [
+      { label: "Task", value: profile.task || "—" },
+      { label: "Dataset", value: profile.source && profile.target ? `${profile.source} → ${profile.target}` : "—", wide: true },
+      { label: "Runtime", value: profile.dimension || "Mixed" },
+      { label: "Shift", value: modality.domainShift }
+    ];
 
-    const intraDice = modality.regional ? modality.baseline.intra.dice[stateRef.region] : modality.baseline.intra.dice;
-    const intraHd95 = modality.regional ? modality.baseline.intra.hd95[stateRef.region] : modality.baseline.intra.hd95;
-    const targetDice = modality.regional ? modality.baseline.target.dice[stateRef.region] : modality.baseline.target.dice;
-    const targetHd95 = modality.regional ? modality.baseline.target.hd95[stateRef.region] : modality.baseline.target.hd95;
-
-    const profile = modalityProfiles[stateRef.modality] || {};
-
-    document.getElementById("modality-table").innerHTML = `
-      <div class="dataset-table-head">
-        <div>
-          <h3 class="table-block__title">${stateRef.modality} dataset performance</h3>
-          <p class="section-text">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")} · ${rows.length} methods from Tables 7-14</p>
+    return `
+      <section class="dataset-section" id="dataset-${modalityKey}">
+        <div class="dataset-section__head">
+          <div>
+            <h3 class="table-block__title">${modalityKey} dataset performance</h3>
+            <p class="section-text">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")} · ${rows.length} methods · ${metricKeys.map((metric) => modalityMetricLabels[metric].replace(/[↑↓]/g, "").trim()).join(", ")}</p>
+          </div>
         </div>
-      </div>
-      <div class="table-shell">
-        <table class="paper-table">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Paradigm</th>
-              <th>Dice ↑</th>
-              <th>HD95 ↓</th>
-              <th>Code</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="group-divider">
-              <th>Intra-domain</th>
-              <td>Source baseline</td>
-              <td class="metric-cell mono">${formatMetric(intraDice, "dice")}</td>
-              <td class="metric-cell mono">${formatMetric(intraHd95, "hd95")}</td>
-              <td>—</td>
-            </tr>
-            <tr>
-              <th>Target-domain (w/o TTA)</th>
-              <td>Target baseline</td>
-              <td class="metric-cell mono">${formatMetric(targetDice, "dice")}</td>
-              <td class="metric-cell mono">${formatMetric(targetHd95, "hd95")}</td>
-              <td>—</td>
-            </tr>
-            ${rows
-              .map((row) => {
-                const metadata = data.methods[row.method];
-                const dice = getDice(row);
-                const hd95 = getHd95(row);
-                const belowTarget = dice < targetDice;
-                const paradigm = data.paradigms[metadata.paradigm];
-                return `
-                  <tr class="${belowTarget ? "below-target" : ""}">
-                    <td>${methodLabel(row.method, metadata)}</td>
-                    <td>${paradigm.symbol} ${paradigm.label}</td>
-                    <td class="metric-cell mono ${rankClass(diceRanks[row.method])}">${formatMetric(dice, "dice")}</td>
-                    <td class="metric-cell mono ${rankClass(hd95Ranks[row.method])}">${formatMetric(hd95, "hd95")}</td>
-                    <td>${availabilityCell(metadata, data.meta.repositoryUrl)}</td>
-                  </tr>
-                `;
-              })
-              .join("")}
-          </tbody>
-        </table>
-      </div>
-      <p class="table-footnote">
-        Gray rows fall below the target-domain baseline. MRI follows the selected region (${modality.regional ? stateRef.region : "not applicable"}).
-      </p>
+        <div class="context-strip dataset-context">
+          ${contextChips
+            .map(
+              (chip) => `
+                <div class="context-chip ${chip.wide ? "context-chip--wide" : ""}">
+                  <span class="context-chip__label">${escapeHtml(chip.label)}</span>
+                  <span class="context-chip__value">${escapeHtml(chip.value)}</span>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="table-shell">
+          <table class="paper-table paper-table--metrics">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Paradigm</th>
+                ${metricKeys.map((metric) => `<th>${modalityMetricLabels[metric]}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-divider">
+                <th>Intra-domain</th>
+                <td>Source baseline</td>
+                ${metricKeys.map((metric) => metricCell(modality.baseline.intra, metric, modality, region)).join("")}
+              </tr>
+              <tr>
+                <th>Target-domain (w/o TTA)</th>
+                <td>Target baseline</td>
+                ${metricKeys.map((metric) => metricCell(modality.baseline.target, metric, modality, region)).join("")}
+              </tr>
+              ${rows
+                .map((row) => {
+                  const metadata = data.methods[row.method];
+                  const dice = getMetricValue(row.metrics, "dice", modality, region);
+                  const belowTarget = targetDice !== undefined && dice !== undefined && dice < targetDice;
+                  const paradigm = data.paradigms[metadata.paradigm];
+                  return `
+                    <tr class="${belowTarget ? "below-target" : ""}">
+                      <td>${methodLabel(row.method, metadata)}</td>
+                      <td>${paradigm.symbol} ${paradigm.label}</td>
+                      ${metricKeys.map((metric) => metricCell(row.metrics, metric, modality, region, rankClass(rankMaps[metric][row.method]))).join("")}
+                    </tr>
+                  `;
+                })
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderRegionalDatasetSection(stateRef, modalityKey, modality) {
+    const data = stateRef.data;
+    const profile = modalityProfiles[modalityKey] || {};
+    const rows = Object.entries(modality.methods).map(([method, metrics]) => ({ method, metrics }));
+    rows.sort((left, right) => {
+      const leftValue = getSortValue(left.metrics, stateRef.sortBy, modality);
+      const rightValue = getSortValue(right.metrics, stateRef.sortBy, modality);
+      if (leftValue === undefined || rightValue === undefined) {
+        return left.method.localeCompare(right.method);
+      }
+      return stateRef.sortBy === "dice" ? rightValue - leftValue : leftValue - rightValue;
+    });
+
+    const metricKeys = ["dice", "hd95", "sen", "ppv"].filter((metric) => metricExistsForModality(modality, metric));
+    const rankMaps = {};
+    metricKeys.forEach((metric) => {
+      modality.regions.forEach((region) => {
+        rankMaps[`${metric}-${region}`] = rankMap(
+          rows
+            .map((row) => ({ method: row.method, value: getMetricValue(row.metrics, metric, modality, region) }))
+            .filter((row) => row.value !== undefined),
+          "value",
+          metric !== "hd95"
+        );
+      });
+    });
+
+    const targetDice = getRegionalAverage(modality.baseline.target, "dice", modality);
+    const contextChips = [
+      { label: "Task", value: profile.task || "—" },
+      { label: "Dataset", value: profile.source && profile.target ? `${profile.source} → ${profile.target}` : "—", wide: true },
+      { label: "Runtime", value: profile.dimension || "Mixed" },
+      { label: "Regions", value: modality.regions.join(" / ") },
+      { label: "Shift", value: modality.domainShift }
+    ];
+
+    return `
+      <section class="dataset-section" id="dataset-${modalityKey}">
+        <div class="dataset-section__head">
+          <div>
+            <h3 class="table-block__title">${modalityKey} dataset performance</h3>
+            <p class="section-text">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")} · ${rows.length} methods · ${modality.regions.join(", ")} regions</p>
+          </div>
+        </div>
+        <div class="context-strip dataset-context">
+          ${contextChips
+            .map(
+              (chip) => `
+                <div class="context-chip ${chip.wide ? "context-chip--wide" : ""}">
+                  <span class="context-chip__label">${escapeHtml(chip.label)}</span>
+                  <span class="context-chip__value">${escapeHtml(chip.value)}</span>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="table-shell">
+          <table class="paper-table paper-table--metrics paper-table--regional">
+            <thead>
+              <tr>
+                <th rowspan="2">Method</th>
+                <th rowspan="2">Paradigm</th>
+                ${modality.regions.map((region) => `<th colspan="${metricKeys.length}">${region}</th>`).join("")}
+              </tr>
+              <tr>
+                ${modality.regions
+                  .map((region) => metricKeys.map((metric) => `<th>${region} ${modalityMetricLabels[metric]}</th>`).join(""))
+                  .join("")}
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-divider">
+                <th>Intra-domain</th>
+                <td>Source baseline</td>
+                ${modality.regions.map((region) => metricKeys.map((metric) => metricCell(modality.baseline.intra, metric, modality, region)).join("")).join("")}
+              </tr>
+              <tr>
+                <th>Target-domain (w/o TTA)</th>
+                <td>Target baseline</td>
+                ${modality.regions.map((region) => metricKeys.map((metric) => metricCell(modality.baseline.target, metric, modality, region)).join("")).join("")}
+              </tr>
+              ${rows
+                .map((row) => {
+                  const metadata = data.methods[row.method];
+                  const dice = getRegionalAverage(row.metrics, "dice", modality);
+                  const belowTarget = targetDice !== undefined && dice !== undefined && dice < targetDice;
+                  const paradigm = data.paradigms[metadata.paradigm];
+                  return `
+                    <tr class="${belowTarget ? "below-target" : ""}">
+                      <td>${methodLabel(row.method, metadata)}</td>
+                      <td>${paradigm.symbol} ${paradigm.label}</td>
+                      ${modality.regions
+                        .map((region) =>
+                          metricKeys
+                            .map((metric) => metricCell(row.metrics, metric, modality, region, rankClass(rankMaps[`${metric}-${region}`][row.method])))
+                            .join("")
+                        )
+                        .join("")}
+                    </tr>
+                  `;
+                })
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </section>
     `;
   }
 
