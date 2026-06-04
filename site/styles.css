@@ -253,7 +253,13 @@ a {
 }
 
 .summary__copy {
-  max-width: 920px;
+  width: 100%;
+  max-width: none;
+  text-align: center;
+}
+
+.summary__copy .section-text {
+  max-width: none;
 }
 
 .section-head {

@@ -176,7 +176,6 @@
     const { data } = stateRef;
     document.title = data.meta.title;
     document.getElementById("hero-lede").textContent = data.meta.subtitle;
-    document.getElementById("scope-note").textContent = data.meta.mvpScope;
     document.getElementById("footer-updated").textContent = `Updated ${data.meta.updated} from benchmark tables.`;
 
     const stats = [
@@ -196,17 +195,6 @@
       )
       .join("");
 
-    document.getElementById("paradigm-legend").innerHTML = paradigmOrder
-      .map((key) => {
-        const paradigm = data.paradigms[key];
-        return `
-          <span class="paradigm-pill">
-            <span class="paradigm-pill__symbol" style="color:${paradigm.color}">${paradigm.symbol}</span>
-            <span>${paradigm.label}</span>
-          </span>
-        `;
-      })
-      .join("");
   }
 
   function bindViewTabs(stateRef) {
