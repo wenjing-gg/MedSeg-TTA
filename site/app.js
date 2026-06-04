@@ -513,23 +513,55 @@
     `;
   }
 
+  function getMetricValue(metrics, metric, modality, region) {
+    const value = metrics[metric];
+    return modality.regional ? value[region] : value;
+  }
+
+  function getDatasetLeader(modality, sortBy, region) {
+    return Object.entries(modality.methods)
+      .map(([method, metrics]) => ({
+        method,
+        dice: getMetricValue(metrics, "dice", modality, region),
+        hd95: getMetricValue(metrics, "hd95", modality, region)
+      }))
+      .sort((left, right) => (sortBy === "dice" ? right.dice - left.dice : left.hd95 - right.hd95))[0];
+  }
+
   function renderModalityExplorer(stateRef) {
     const { data } = stateRef;
     const modalityKeys = modalityOrder.filter((key) => data.modalityLeaderboards[key]);
-    const modalityTabs = document.getElementById("modality-tabs");
+    const datasetGrid = document.getElementById("dataset-grid");
     const sortTabs = document.getElementById("sort-tabs");
     const regionTabs = document.getElementById("region-tabs");
 
-    modalityTabs.innerHTML = modalityKeys
+    datasetGrid.innerHTML = modalityKeys
       .map(
-        (key) => `
-          <button type="button" class="segmented__button ${stateRef.modality === key ? "is-active" : ""}" data-modality="${key}">
-            ${key}
+        (key) => {
+          const modality = data.modalityLeaderboards[key];
+          const profile = modalityProfiles[key] || {};
+          const region = modality.regional ? stateRef.region : "WT";
+          const leader = getDatasetLeader(modality, stateRef.sortBy, region);
+          const leaderMeta = data.methods[leader.method];
+          const paradigm = data.paradigms[leaderMeta.paradigm];
+          return `
+          <button type="button" class="dataset-card ${stateRef.modality === key ? "is-active" : ""}" data-modality="${key}" aria-pressed="${stateRef.modality === key ? "true" : "false"}">
+            <span class="dataset-card__head">
+              <span class="dataset-card__modality">${key}</span>
+              <span class="dataset-card__shift">${modality.domainShift} shift</span>
+            </span>
+            <span class="dataset-card__task">${escapeHtml(profile.task || "Segmentation task")}</span>
+            <span class="dataset-card__pair">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")}</span>
+            <span class="dataset-card__metrics">
+              <span>${paradigm.symbol} ${escapeHtml(leader.method)}</span>
+              <span class="mono">Dice ${formatMetric(leader.dice, "dice")} · HD95 ${formatMetric(leader.hd95, "hd95")}</span>
+            </span>
           </button>
-        `
+        `;
+        }
       )
       .join("");
-    modalityTabs.querySelectorAll("[data-modality]").forEach((button) => {
+    datasetGrid.querySelectorAll("[data-modality]").forEach((button) => {
       button.addEventListener("click", () => {
         stateRef.modality = button.dataset.modality;
         if (stateRef.modality !== "MRI") {
@@ -580,9 +612,9 @@
         `
           <div class="section-head">
             <div>
-              <h2 class="section-title">Modality drilldown</h2>
+              <h2 class="section-title">Dataset drilldown</h2>
               <p class="section-text">
-                Each modality keeps its own baseline context, dataset pair, and ranking logic. MRI remains region-aware, while the code column continues to point back into the repository for locally available methods.
+                Select a dataset card to inspect all 20 methods from Tables 7-14. Each table keeps the source baseline, target-domain baseline, paradigm label, Dice, HD95, and code links where available.
               </p>
             </div>
           </div>
@@ -663,7 +695,15 @@
     const targetDice = modality.regional ? modality.baseline.target.dice[stateRef.region] : modality.baseline.target.dice;
     const targetHd95 = modality.regional ? modality.baseline.target.hd95[stateRef.region] : modality.baseline.target.hd95;
 
+    const profile = modalityProfiles[stateRef.modality] || {};
+
     document.getElementById("modality-table").innerHTML = `
+      <div class="dataset-table-head">
+        <div>
+          <h3 class="table-block__title">${stateRef.modality} dataset performance</h3>
+          <p class="section-text">${escapeHtml(profile.source || "Source")} → ${escapeHtml(profile.target || "Target")} · ${rows.length} methods from Tables 7-14</p>
+        </div>
+      </div>
       <div class="table-shell">
         <table class="paper-table">
           <thead>
