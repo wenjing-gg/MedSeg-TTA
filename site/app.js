@@ -168,12 +168,6 @@
 
   function initializeStaticContent(stateRef) {
     const { data } = stateRef;
-    const localCount = Object.values(data.methods).filter((method) => method.local).length;
-    const jumpCount = Object.values(data.methods).reduce(
-      (total, method) => total + Object.keys(method.routes || {}).length,
-      0
-    );
-
     document.title = data.meta.title;
     document.getElementById("hero-lede").textContent = data.meta.subtitle;
     document.getElementById("scope-note").textContent = data.meta.mvpScope;
@@ -182,9 +176,7 @@
     const stats = [
       { value: Object.keys(data.modalityLeaderboards).length, label: "Modalities" },
       { value: paradigmOrder.length, label: "Paradigms" },
-      { value: Object.keys(data.methods).length, label: "Methods" },
-      { value: jumpCount, label: "Code jumps" },
-      { value: localCount, label: "Local methods" }
+      { value: Object.keys(data.methods).length, label: "Methods" }
     ];
 
     document.getElementById("hero-stats").innerHTML = stats
