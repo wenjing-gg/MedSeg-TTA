@@ -147,7 +147,6 @@
     const main = document.querySelector(".page");
     main.innerHTML = `
       <section class="band">
-        <p class="section-kicker">Leaderboard failed to load</p>
         <h1 class="hero__title">The MVP page could not read its benchmark data.</h1>
         <p class="hero__lede">${escapeHtml(String(error.message || error))}</p>
       </section>
@@ -277,7 +276,6 @@
 
     document.getElementById("spotlight-grid").innerHTML = `
       <article class="spotlight-panel">
-        <p class="spotlight-panel__kicker">Overall podium</p>
         <h3 class="spotlight-panel__title">Top methods by mean Dice</h3>
         <ol class="podium-list">
           ${summaryRows
@@ -287,7 +285,6 @@
         </ol>
       </article>
       <article class="spotlight-panel">
-        <p class="spotlight-panel__kicker">Shift leaders</p>
         <h3 class="spotlight-panel__title">Which paradigm leads by regime</h3>
         <div class="trend-list">
           ${Object.entries(winners)
@@ -310,7 +307,6 @@
         </div>
       </article>
       <article class="spotlight-panel">
-        <p class="spotlight-panel__kicker">Source tables</p>
         <h3 class="spotlight-panel__title">MVP coverage</h3>
         <ul class="compact-list">
           <li class="compact-list__item">7 modality views with Dice and HD95 retained</li>
@@ -378,7 +374,6 @@
     container.innerHTML = `
       <div class="section-head">
         <div>
-          <p class="section-kicker">Table 3 re-framed</p>
           <h2 class="section-title">Paradigm-level overview across domain shift regimes</h2>
           <p class="section-text">
             Cross-domain cells keep the paper's intra-domain to target-domain transition, while the four paradigm blocks expose Dice and HD95 behavior side by side. The top three paradigm scores for each row are highlighted directly inside the table.
@@ -508,7 +503,6 @@
     container.innerHTML = `
       <div class="section-head">
         <div>
-          <p class="section-kicker">Table 4 re-framed</p>
           <h2 class="section-title">Method summary across all seven modalities</h2>
           <p class="section-text">
             Rows are grouped by paradigm and sorted by mean Dice. Local methods expose root, 2D, and 3D GitHub jumps where available.
@@ -586,7 +580,6 @@
         `
           <div class="section-head">
             <div>
-              <p class="section-kicker">Tables 7-14 re-framed</p>
               <h2 class="section-title">Modality drilldown</h2>
               <p class="section-text">
                 Each modality keeps its own baseline context, dataset pair, and ranking logic. MRI remains region-aware, while the code column continues to point back into the repository for locally available methods.
@@ -745,7 +738,6 @@
           <section class="local-group">
             <div class="local-group__header">
               <div>
-                <p class="section-kicker">${paradigm.symbol} ${paradigm.shortLabel}</p>
                 <h3 class="local-group__title">${paradigm.label}</h3>
               </div>
               <p class="local-group__meta">${methods.length} methods, ${localCount} with code</p>
