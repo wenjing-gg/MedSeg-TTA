@@ -255,7 +255,7 @@ a {
 .summary__copy {
   width: 100%;
   max-width: none;
-  text-align: center;
+  text-align: left;
 }
 
 .summary__copy .section-text {
