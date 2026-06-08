@@ -276,6 +276,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "vptta",
+        "name": "VPTTA",
+        "source_dir": "prior_estimation/VPTTA",
+        "paradigm_slug": "prior_estimation",
+        "paradigm": "Prior Estimation",
+        "modality": "Fundus/Polyp",
+        "status": "available",
+        "summary": "Continual visual-prompt test-time adaptation for 2D OPTIC and POLYP workflows, with 3D MRI/CT entrypoints reserved for shared-checkpoint adaptation wiring.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["optic.py", "polyp.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py"],
+        },
+        "aliases": {
+            "vptta_2d": "two_d",
+            "vptta_3d": "three_d",
+        },
+    },
+    {
         "slug": "exploring_tta",
         "name": "ExploringTTA",
         "source_dir": "prior_estimation/ExploringTTA",
@@ -547,7 +566,7 @@ TABLE_METHODS = [
         "paradigm": "Prior Estimation",
         "original_modality": "OCT",
         "original_dimension": "2D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "AdaMI",
