@@ -43,6 +43,7 @@ MedSeg-TTA/
 ├── input_level_transformation/
 │   ├── SFDA-FSM/
 │   ├── DLTTA/
+│   ├── DeTTA/
 │   ├── AIF-SFDA/
 │   ├── STDR/
 │   └── RSA/
@@ -55,6 +56,7 @@ MedSeg-TTA/
 │   ├── ExploringTTA/
 │   ├── AdaMI/
 │   ├── PASS/
+│   ├── VPTTA/
 │   └── ProSFDA/
 └── ASSETS.md
 ```
