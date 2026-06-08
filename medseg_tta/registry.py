@@ -127,6 +127,27 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "detta",
+        "name": "DeTTA",
+        "source_dir": "output_level_regularization/DeTTA",
+        "paradigm_slug": "output_level_regularization",
+        "paradigm": "Output-level Regularization",
+        "modality": "CT/MRI",
+        "status": "available",
+        "summary": "Denoising-inspired test-time adaptation that updates BatchNorm affine parameters with reconstruction/consistency losses while reusing SaTTCA/TENT-style data, checkpoint, and TTA entrypoints.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["tta2d.py"],
+            "three_d": ["tta3d.py", "tta3dCT.py", "tta3dMRI.py"],
+        },
+        "aliases": {
+            "detta_2d": "two_d",
+            "detta_3d": "three_d",
+            "detta_3dct": "three_d",
+            "detta_3dmri": "three_d",
+        },
+    },
+    {
         "slug": "grata",
         "name": "GraTa",
         "source_dir": "feature_level_alignment/GraTa",
@@ -474,11 +495,11 @@ TABLE_METHODS = [
     },
     {
         "name": "DeTTA",
-        "paradigm_slug": "feature_level_alignment",
-        "paradigm": "Feature-level Alignment",
+        "paradigm_slug": "output_level_regularization",
+        "paradigm": "Output-level Regularization",
         "original_modality": "CT",
         "original_dimension": "2D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "TestFit",
