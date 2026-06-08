@@ -281,9 +281,9 @@ _METHOD_DATA = [
         "source_dir": "prior_estimation/VPTTA",
         "paradigm_slug": "prior_estimation",
         "paradigm": "Prior Estimation",
-        "modality": "Fundus/Polyp",
+        "modality": "Fundus/Polyp/MRI/CT",
         "status": "available",
-        "summary": "Continual visual-prompt test-time adaptation for 2D OPTIC and POLYP workflows, with 3D MRI/CT entrypoints reserved for shared-checkpoint adaptation wiring.",
+        "summary": "Continual visual-prompt test-time adaptation for 2D OPTIC/POLYP plus 3D MRI/CT Fourier-prompt adaptation using SaTTCA/TENT-style data loaders.",
         "dimensions": ["two_d", "three_d"],
         "entries_by_dimension": {
             "two_d": ["optic.py", "polyp.py"],
