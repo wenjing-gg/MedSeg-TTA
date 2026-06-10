@@ -51,6 +51,7 @@ MedSeg-TTA/
 │   ├── DG-TTA/
 │   ├── SaTTCA/
 │   ├── UPL-SFDA/
+│   ├── SmaRT/
 │   └── tent/
 ├── prior_estimation/
 │   ├── ExploringTTA/
