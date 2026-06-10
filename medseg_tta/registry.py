@@ -232,6 +232,25 @@ _METHOD_DATA = [
         },
     },
     {
+        "slug": "smart",
+        "name": "SmaRT",
+        "source_dir": "output_level_regularization/SmaRT",
+        "paradigm_slug": "output_level_regularization",
+        "paradigm": "Output-level Regularization",
+        "modality": "MRI/CT",
+        "status": "available",
+        "summary": "Style-modulated robust test-time adaptation with learnable augmentation, momentum-model pseudo-label refinement, and structural regularizers, organized alongside TENT-style output regularization methods.",
+        "dimensions": ["two_d", "three_d"],
+        "entries_by_dimension": {
+            "two_d": ["train_source2D.py"],
+            "three_d": ["test.py", "test_targetCT.py", "train_source.py"],
+        },
+        "aliases": {
+            "smart_2d": "two_d",
+            "smart_3d": "three_d",
+        },
+    },
+    {
         "slug": "prosfda",
         "name": "ProSFDA",
         "source_dir": "prior_estimation/ProSFDA",
@@ -523,7 +542,7 @@ TABLE_METHODS = [
         "paradigm": "Output-level Regularization",
         "original_modality": "MRI",
         "original_dimension": "3D",
-        "status": "missing",
+        "status": "available",
     },
     {
         "name": "DG-TTA",
